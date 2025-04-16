@@ -4,8 +4,7 @@ import subprocess
 
 app = Flask(__name__)
 
-
-
+subprocess.run("ip a")
 
 @app.route("/")
 def index():
@@ -21,6 +20,7 @@ def iot():
 
 @app.route("/newapp")
 def newapp():
+    
     return render_template("newapp.j2")
 
 @app.route("/createedge", methods=["POST"])
