@@ -32,4 +32,4 @@ def create_edge():
     print(data)
     return render_template("index.j2")
 
-app.run()
+app.run(port=80)
