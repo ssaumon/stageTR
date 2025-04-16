@@ -1,4 +1,5 @@
 apt update
-apt install mysql-server
+apt install python3-pip
+pip install --no-cache-dir -r requirements.txt
 
-echo bonjour
+echo installation des dépendances fait !
