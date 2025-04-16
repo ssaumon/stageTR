@@ -4,7 +4,6 @@ import subprocess
 
 app = Flask(__name__)
 
-subprocess.run("ip a")
 
 @app.route("/")
 def index():
