@@ -5,7 +5,7 @@ pip install --no-cache-dir -r requirements.txt
 
 echo installation des dépendances fait !
 
-virsh define backend/net.xml
+virsh net-define backend/net.xml
 
 echo création du commutateur virtuel
 
