@@ -19,7 +19,6 @@ def iot():
 
 @app.route("/newapp")
 def newapp():
-    
     return render_template("newapp.j2")
 
 @app.route("/createedge", methods=["POST"])
@@ -27,7 +26,7 @@ def create_edge():
     data = request.form.to_dict()
     print(data)
     if "nom" in data.keys() and "ram" in data.keys():
-        subprocess.run("./backend/createedge.sh", data["nom"], data["ram"])
+        subprocess.run(["./backend/createedge.sh", data["nom"], data["ram"]])
 
     
     return render_template("index.j2")
