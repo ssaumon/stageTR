@@ -26,7 +26,7 @@ def newapp():
 def create_edge():
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys():
-        subprocess.run(f"./backend/createedge.sh {data["nom"]} {data["ram"]}")
+        subprocess.run(f"./backend/createedge.sh", data["nom"], data["ram"])
 
     print(data)
     return render_template("index.j2")
