@@ -1,5 +1,5 @@
 <network>
-  <name>vnet-demo</name>
+  <name>virtnet</name>
   <bridge name='virbr10' stp='on' delay='0'/>
   <forward mode='nat' dev="enp1s0"/>
   <ip address='192.168.100.1' netmask='255.255.255.0'>

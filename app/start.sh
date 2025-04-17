@@ -10,4 +10,6 @@ virsh net-define backend/net.xml
 echo création du commutateur virtuel
 
 chmod +x backend/createedge.sh
+chmod +x backend/createiot.sh
+
 python3 app.py

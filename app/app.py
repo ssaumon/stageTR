@@ -24,12 +24,15 @@ def newapp():
 @app.route("/createedge", methods=["POST"])
 def create_edge():
     data = request.form.to_dict()
-    print(Path.cwd())
-    print(data)
     if "nom" in data.keys() and "ram" in data.keys():
         subprocess.run(["./backend/createedge.sh", data["nom"], data["ram"]])
+    return render_template("index.j2")
 
-    
+@app.route("/createiot", methods=["POST"])
+def create_iot():
+    data = request.form.to_dict()
+    if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
+        subprocess.run(["./backend/createiot.sh", data["nom"], data["ram"], data["cpu"]])
     return render_template("index.j2")
 
 app.run(host="0.0.0.0", port=80)
