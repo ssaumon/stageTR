@@ -25,10 +25,11 @@ def newapp():
 @app.route("/createedge", methods=["POST"])
 def create_edge():
     data = request.form.to_dict()
-    if "nom" in data.keys() and "ram" in data.keys():
-        subprocess.run(f"./backend/createedge.sh", data["nom"], data["ram"])
-
     print(data)
+    if "nom" in data.keys() and "ram" in data.keys():
+        subprocess.run("./backend/createedge.sh", data["nom"], data["ram"])
+
+    
     return render_template("index.j2")
 
 app.run(host="0.0.0.0", port=80)
