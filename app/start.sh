@@ -9,4 +9,5 @@ virsh define backend/net.xml
 
 echo création du commutateur virtuel
 
+chmod +x backend/createedge.sh
 python3 app.py
