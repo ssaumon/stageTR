@@ -36,4 +36,6 @@ echo création du commutateur virtuel
 chmod +x backend/createedge.sh
 chmod +x backend/createiot.sh
 
-python3 app.py
+export BACKIP=127.0.0.1
+
+python3 frontend/app.py 
