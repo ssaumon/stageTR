@@ -42,28 +42,47 @@
         <div class="container-fluid">
 
       
-        <h1 class="d-flex justify-content-center">Ajout d'une Nouvelle VM IoT</h1>
-        <div class="d-flex justify-content-center">
-          
-          <form class="form" action="http://192.168.98.90:80/createiot" method="post">
-            <div class="mb-3 mt-3">
-              <label for="nom" class="form-label">Nom :</label>
-              <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
-            </div>
-            <div class="mb-3">
-              <label for="ram" class="form-label">RAM (Mo) :</label>
-              <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
-            </div>
-
-            <div class="mb-3">
-              <label for="cpu" class="form-label">CPU :</label>
-              <input type="number" class="form-control" id="cpu" name="cpu">
-            </div>
-
-            <button type="submit" class="btn btn-dark">Submit</button>
-          </form> 
+        <h1 class="d-flex justify-content-center">VM IoT</h1>
+        <div class="d-flex justify-content-end m-4">
+            <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+                Ajouter une VM IoT
+          </button>
         </div>
+
+        <div class="modal fade " id="modal" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Ajouter une VM IoT</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                    <div class="modal-body justify-content-center">
+                    
+                    <form class="form" action="http://192.168.98.90:80/createiot" method="post">
+                        <div class="mb-3 mt-3">
+                        <label for="nom" class="form-label">Nom :</label>
+                        <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
+                        </div>
+                        <div class="mb-3">
+                        <label for="ram" class="form-label">RAM (Mo) :</label>
+                        <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
+                        </div>
+
+                        <div class="mb-3">
+                        <label for="cpu" class="form-label">CPU :</label>
+                        <input type="number" class="form-control" id="cpu" name="cpu">
+                        </div>
+
+                        <button type="submit" class="btn btn-dark">Ajouter</button>
+                    </form> 
+                </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
-  
+
 </body>
 </html>
