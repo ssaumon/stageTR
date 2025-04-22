@@ -9,47 +9,56 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <div class="container-fluid">
-          <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="http://192.168.98.90:80/">Monitoring</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Nouvelle VM</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item active" href="http://192.168.98.90:80/edge">Edge</a></li>
-                  <li><a class="dropdown-item" href="http://192.168.98.90:80/iot">IoT</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="http://192.168.98.90:80/newapp">Nouvelle Application</a>
-              </li>
+    <div class="d-flex">
+        <div class="bg-dark text-white" id="sidebar" style="width: 250px; height: 100vh; padding: 10px; border-right: 1px solid #444;">
+            <h3 class="text-center">Menu</h3>
+            
+            <a href="http://192.168.98.90:80/" class="btn btn-dark w-100 text-start mb-2 mt-3 active">Monitoring</a>
+            
+            
+            <div class="accordion mb-2" id="accordionExample">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button text-white bg-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        créer une VM
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body bg-dark">
+                            
+                            <a href="http://192.168.98.90:80/edge" class="nav-link text-white">Edge</a>
+                            
+                            <a href="http://192.168.98.90:80/iot" class="nav-link text-white">IoT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
 
-
-            </ul>
-          </div>
+            <a href="http://192.168.98.90:80/newapp" class="btn btn-dark w-100 text-start mb-2">Créer une application</a>
+            
+            
         </div>
-      </nav>
+        <div class="container-fluid">
 
       
-      <h1 class="d-flex justify-content-center">Ajout d'une Nouvelle VM Edge</h1>
-      <div class="d-flex justify-content-center">
-        
-        <form class="form" action="http://192.168.98.90:80/createedge" method="post">
-          <div class="mb-3 mt-3">
-            <label for="nom" class="form-label">Nom :</label>
-            <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
-          </div>
-          <div class="mb-3">
-            <label for="ram" class="form-label">RAM (Mo) :</label>
-            <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
-          </div>
+          <h1 class="d-flex justify-content-center">Ajout d'une Nouvelle VM Edge</h1>
+          <div class="d-flex justify-content-center">
+            
+            <form class="form" action="http://192.168.98.90:80/createedge" method="post">
+              <div class="mb-3 mt-3">
+                <label for="nom" class="form-label">Nom :</label>
+                <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
+              </div>
+              <div class="mb-3">
+                <label for="ram" class="form-label">RAM (Mo) :</label>
+                <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
+              </div>
 
-          <button type="submit" class="btn btn-dark">Submit</button>
-        </form> 
-      </div>
+              <button type="submit" class="btn btn-dark">Submit</button>
+            </form> 
+          </div>
+        </div>
   
 </body>
 </html>
