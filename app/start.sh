@@ -38,6 +38,7 @@ echo création du commutateur virtuel
 
 chmod +x backend/createedge.sh
 chmod +x backend/createiot.sh
+chmod +x backend/deleteVM.sh
 
 echo création de la base de données
 chmod +x backend/sql.sh
