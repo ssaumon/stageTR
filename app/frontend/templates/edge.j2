@@ -62,14 +62,16 @@
               </thead>
               <tbody>
                 {% for nom,cpu,ram,etat in vms %}
-                <tr><p>{{nom}}</p></tr>
-                <tr><p>{{cpu}}</p></tr>
-                <tr><p>{{ram}}</p></tr>
-                <tr><p>{{etat}}</p></tr>
                 <tr>
-                  <button type="button" class=" btn btn-primary" data-bs-toggle="modal{{nom}}" data-bs-target="#modal{{nom}}">
-                  Supprimer
-                  </button>
+                  <td>{{nom}}</td>
+                  <td>{{cpu}}</td>
+                  <td>{{ram}}</td>
+                  <td>{{etat}}</td>
+                  <td>
+                    <button type="button" class=" btn btn-primary" data-bs-toggle="modal{{nom}}" data-bs-target="#modal{{nom}}">
+                    Supprimer
+                    </button>
+                  </td>
                 </tr>
                 
                 <div class="modal fade " id="modal{{nom}}">
