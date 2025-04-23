@@ -18,7 +18,7 @@ def index():
 def edge():
     cur.execute("SELECT * from edge;")
     print(cur.fetchall())
-    return render_template("edge.j2")
+    return render_template("edge.j2",vms=cur.fetchall())
 
 @app.route("/iot")
 def iot():
