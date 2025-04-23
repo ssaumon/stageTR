@@ -27,7 +27,7 @@ echo installation de mysql
 apt install -y mysql-server
 
 echo installation de requirements.txt
-pip install --no-cache-dir -r requirements.txt
+pip install --no-cache-dir -r backend/requirements.txt
 
 echo installation des dépendances fait !
 
