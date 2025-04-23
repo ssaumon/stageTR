@@ -46,6 +46,8 @@ def create_iot():
         subprocess.Popen(["./backend/createiot.sh", data["nom"], data["ram"], data["cpu"]])
     return render_template("index.j2")
 
-app.run(host="0.0.0.0", port=80)
-cur.close()
-cnx.close()
+try:
+    app.run(host="0.0.0.0", port=80)
+except:
+    cur.close()
+    cnx.close()
