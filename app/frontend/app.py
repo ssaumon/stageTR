@@ -35,6 +35,7 @@ def create_edge():
         #r=requests.post(f"{backip}:5000/createedge",data=data)
         nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
         cur.execute("INSERT INTO edge VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
+        cnx.commit()
         subprocess.Popen(["./backend/createedge.sh", nom, ram, cpu])
     return render_template("index.j2")
 
