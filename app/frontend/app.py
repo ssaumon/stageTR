@@ -4,7 +4,7 @@ import subprocess
 import requests
 import mysql.connector
 
-cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD_VMs")
+cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD_VMs",password="bonjour")
 cur=cnx.cursor()
 app = Flask(__name__)
 
