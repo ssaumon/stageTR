@@ -62,10 +62,10 @@
               </thead>
               <tbody>
                 {% for nom,cpu,ram,etat in vms %}
-                <tr>{{nom}}</tr>
-                <tr>{{cpu}}</tr>
-                <tr>{{ram}}</tr>
-                <tr>{{etat}}</tr>
+                <tr><p>{{nom}}</p></tr>
+                <tr><p>{{cpu}}</p></tr>
+                <tr><p>{{ram}}</p></tr>
+                <tr><p>{{etat}}</p></tr>
                 <tr>
                   <button type="button" class=" btn btn-primary" data-bs-toggle="modal{{nom}}" data-bs-target="#modal{{nom}}">
                   Supprimer
