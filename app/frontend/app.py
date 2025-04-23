@@ -57,7 +57,7 @@ def delvm():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
-        cur.execute("DELETE FROM edge WHERE nom=='%s';", (nom))
+        cur.execute("DELETE FROM edge WHERE nom=='%s';", list(nom))
         cnx.commit()
         subprocess.run(["./backend/deleteVM.sh", nom])
     return render_template("newapp.j2")
