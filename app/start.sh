@@ -23,6 +23,9 @@ apt install -y uuid-runtime
 echo installation de ansible
 apt install -y ansible
 
+echo installation de mysql
+apt install -y mysql-server
+
 echo installation de requirements.txt
 pip install --no-cache-dir -r requirements.txt
 
@@ -35,6 +38,10 @@ echo création du commutateur virtuel
 
 chmod +x backend/createedge.sh
 chmod +x backend/createiot.sh
+
+echo création de la base de données
+chmod +x backend/sql.sh
+./backend/sql.sh
 
 export BACKIP=127.0.0.1
 

@@ -1,0 +1,5 @@
+mysql -u root --execute='CREATE DATABASE IF NOT EXISTS BDD_VMs;'
+mysql -u root --execute='USE BDD_VMs;'
+mysql -u root --execute='CREATE TABLE IF NOT EXISTS edge (nom varchar() PRIMARY KEY NOT NULL,cpu INT NOT NULL,ram INT NOT NULL, statut varchar());'
+mysql -u root --execute='CREATE TABLE IF NOT EXISTS iot (nom varchar() PRIMARY KEY NOT NULL,cpu INT NOT NULL,ram INT NOT NULL, statut varchar());'
+mysql -u root --execute='CREATE TABLE IF NOT EXISTS applications (nom varchar() PRIMARY KEY NOT NULL, manifest varchar());'
