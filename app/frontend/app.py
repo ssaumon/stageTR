@@ -32,7 +32,7 @@ def create_edge():
     if "nom" in data.keys() and "ram" in data.keys():
         #r=requests.post(f"{backip}:5000/createedge",data=data)
         nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
-        cur.execute(f"INSERT INTO edge (nom, ram, cpu, statut) VALUES ({nom}, {ram},{cpu},'en création')")
+        cur.execute("INSERT INTO edge VALUES (%s, %s,%s,'en création')", (nom,cpu,ram))
         subprocess.Popen(["./backend/createedge.sh", nom, ram, cpu])
     return render_template("index.j2")
 
