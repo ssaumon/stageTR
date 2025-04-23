@@ -48,6 +48,6 @@ def create_iot():
 
 try:
     app.run(host="0.0.0.0", port=80)
-except:
+finally:
     cur.close()
-    
+    print("fin")
