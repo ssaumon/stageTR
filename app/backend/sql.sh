@@ -2,7 +2,24 @@ mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_nat
 FLUSH PRIVILEGES;
 "
 mysql -u root --password='bonjour' --execute='CREATE DATABASE IF NOT EXISTS BDD_VMs;'
-mysql -u root --password='bonjour' --execute='USE BDD_VMs;'
-mysql -u root --password='bonjour' --execute='USE BDD_VMs; CREATE TABLE IF NOT EXISTS edge (nom varchar(255) PRIMARY KEY ,cpu INT NOT NULL,ram INT NOT NULL, statut varchar(255));'
-mysql -u root --password='bonjour' --execute='USE BDD_VMs; CREATE TABLE IF NOT EXISTS iot (nom varchar(255) PRIMARY KEY ,cpu INT NOT NULL,ram INT NOT NULL, statut varchar(255));'
-mysql -u root --password='bonjour' --execute='USE BDD_VMs; CREATE TABLE IF NOT EXISTS applications (nom varchar(255) PRIMARY KEY , manifest TEXT(65535));'
+
+mysql -u root --password='bonjour' --database=BDD_VMs --execute="
+CREATE TABLE IF NOT EXISTS edge (
+    nom VARCHAR(255) PRIMARY KEY,
+    cpu INT NOT NULL,
+    ram INT NOT NULL,
+    statut VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS iot (
+    nom VARCHAR(255) PRIMARY KEY,
+    cpu INT NOT NULL,
+    ram INT NOT NULL,
+    statut VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS applications (
+    nom VARCHAR(255) PRIMARY KEY,
+    manifest TEXT
+);
+"
