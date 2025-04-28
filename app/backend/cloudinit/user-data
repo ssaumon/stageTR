@@ -1,5 +1,5 @@
 #cloud-config
-hostname: testtt
+hostname: "{{hostname}}"
 users:
   - name: ubuntu
     groups: sudo
