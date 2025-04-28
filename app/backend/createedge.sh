@@ -3,7 +3,7 @@
 
 # sudo virt-install   --name $1   --memory $2   --vcpus $3   --cloud-init user-data=backend/cloudinit/user-data  --disk path=/home/jammy-server-cloudimg-amd64.img,format=raw   --os-type linux   --os-variant detect=on   --import   --network bridge=virbr10  --graphics none
 
-if [ ! [ -d "cloudinit/user-data" ] ]; then
+if [ ! -d "cloudinit/user-data" ]; then
     mkdir cloudinit/user-data
 fi
 
