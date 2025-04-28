@@ -1,0 +1,17 @@
+#cloud-config
+hostname: testtt
+users:
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDsw7jfa7NrKmlCOIlbZ+cdHMucr+qp4yFm+7hLYMj43j/bPaMxY3LVGrVIvUXtaUCMGOSmyGZVF5sBiDPhXQmNpKAjr+yCJjvUYWusj8T1dLBT30hvihUrA0hrSc/LHTRfiEG>
+
+chpasswd:
+  list: |
+    ubuntu:bonjour
+  expire: False
+
+
+

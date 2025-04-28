@@ -38,12 +38,21 @@ echo création du commutateur virtuel
 
 chmod +x backend/createedge.sh
 chmod +x backend/createiot.sh
-chmod +x backend/deleteVM.sh
+chmod +x backend/deleteVM .sh
 
 echo création de la base de données
 chmod +x backend/sql.sh
 ./backend/sql.sh
 
+if [ -f "/home/jammy-server-cloudimg-amd64.img" ]; then
+    echo image déjà installée
+else
+    echo "installation de l'image"
+    wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+    cp jammy-server-cloudimg-amd64.img /home/
+fi
+
+BACKIP=127.0.0.1
 export BACKIP=127.0.0.1
 
 python3 frontend/app.py 
