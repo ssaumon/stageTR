@@ -6,9 +6,18 @@
 if [ ! -d "backend/cloudinit/user-data.d" ]; then
     mkdir backend/cloudinit/user-data.d
 fi
-pwd
+
 
 touch backend/cloudinit/user-data.d/$1
 cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/user-data.d/$1
 
-sudo virt-install --name $1 --os-variant detect=on,name=ubuntujammy --memory $2 --vcpus $3 --network bridge=virbr10,model=virtio --graphics none --disk path=/mnt/vms/$1.qcow2,size=20,bus=virtio,format=qcow2,backing_store="/home/jammy-server-cloudimg-amd64.img" --cloud-init user-data=backend/cloudinit/user-data.d/$1 --import
+
+if [ ! -d "backend/cloudinit/meta-data.d" ]; then
+    mkdir backend/cloudinit/meta-data.d
+fi
+
+
+touch backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/meta-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/meta-data.d/$1
+
+sudo virt-install --name $1 --os-variant detect=on,name=ubuntujammy --memory $2 --vcpus $3 --network bridge=virbr10,model=virtio --graphics none --disk path=/mnt/vms/$1.qcow2,size=20,bus=virtio,format=qcow2,backing_store="/home/jammy-server-cloudimg-amd64.img" --cloud-init user-data=backend/cloudinit/user-data.d/$1,meta-data=backend/cloudinit/meta-data.d/$1 --import
