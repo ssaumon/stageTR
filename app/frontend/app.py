@@ -3,6 +3,7 @@ from pathlib import Path
 import subprocess
 import requests
 import mysql.connector
+import re
 
 cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD_VMs",password="bonjour")
 cur=cnx.cursor()
@@ -45,14 +46,24 @@ def create_edge():
 
 @app.route("/createiot", methods=["POST"])
 def create_iot():
+    err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
-        #r=requests.post(f"{backip}:5000/createiot",data=data)
-        nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
-        cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
-        cnx.commit()
-        subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
-    return render_template("index.j2")
+        if re.match(r" ",nom):
+            err="Il y a un espace dans : "+nom
+        elif int(ram)<512:
+            err="RAM insuffisante : "+ram+" < 512"
+        elif int(cpu)<1:
+            err="CPUs insuffisants : "+cpu+" < 1"
+        else:
+            #r=requests.post(f"{backip}:5000/createiot",data=data)
+            nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
+            cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
+            cnx.commit()
+            subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
+    cur.execute("SELECT * from edge;")
+    vms=cur.fetchall()
+    return render_template("edge.j2",vms=vms, err=err)
 
 
 

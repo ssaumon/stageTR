@@ -41,6 +41,14 @@
 
       <div class="container-fluid">
           <h1 class="d-flex justify-content-center">VM IoT</h1>
+
+          {% if err %}
+
+          <div class="alert alert-danger" role="alert">
+            {{err}}
+          </div>
+          {% endif %}
+
           <div class="d-flex justify-content-end m-4">
             <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
               Ajouter une VM IoT
