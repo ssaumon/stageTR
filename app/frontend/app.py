@@ -18,14 +18,13 @@ def index():
 def edge():
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
-    print(vms)
     return render_template("edge.j2",vms=vms)
 
 @app.route("/iot")
 def iot():
     cur.execute("SELECT * from iot;")
-    print(cur.fetchall())
-    return render_template("iot.j2")
+    vms=cur.fetchall()
+    return render_template("iot.j2",vms=vms)
 
 @app.route("/newapp")
 def newapp():
@@ -54,6 +53,8 @@ def create_iot():
         cnx.commit()
         subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
     return render_template("index.j2")
+
+
 
 @app.route("/deledge", methods=["POST"])
 def delvm():
