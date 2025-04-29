@@ -62,9 +62,9 @@ def create_iot():
             cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
             cnx.commit()
             subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
-    cur.execute("SELECT * from edge;")
+    cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return render_template("edge.j2",vms=vms, err=err)
+    return render_template("iot.j2",vms=vms, err=err)
 
 
 
