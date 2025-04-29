@@ -1,5 +1,5 @@
 network:
   version: 2
   ethernets:
-    enp1s0:
+    ens2:
       dhcp4: true
