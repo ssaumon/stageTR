@@ -64,7 +64,7 @@ def delvm():
         print(Path.cwd())
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
-        subprocess.Popen(["./../backend/deleteVM.sh "+nom])
+        subprocess.Popen([r"./backend/deleteVM.sh ",nom])
     return render_template("edge.j2")
 
 try:
