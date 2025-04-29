@@ -2,4 +2,5 @@ network:
   version: 2
   ethernets:
     ens2:
-      dhcp4: true
+      dhcp4: yes
+      dhcp-identifier: mac
