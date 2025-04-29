@@ -68,7 +68,7 @@ def create_iot():
 
 
 @app.route("/deledge", methods=["POST"])
-def delvm():
+def deledge():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
@@ -80,6 +80,22 @@ def delvm():
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
     return render_template("edge.j2", vms=vms)
+
+@app.route("/deliot", methods=["POST"])
+def deliot():
+    data = request.form.to_dict()
+    if "nom" in data.keys():
+        nom=data["nom"]
+        print(nom)
+        print(Path.cwd())
+        cur.execute("DELETE FROM iot WHERE nom = %s;", (nom,))
+        cnx.commit()
+        subprocess.Popen(["./backend/deleteVM.sh", nom])
+    cur.execute("SELECT * from iot;")
+    vms=cur.fetchall()
+    return render_template("iot.j2", vms=vms)
+
+
 
 try:
     app.run(host="0.0.0.0", port=80)
