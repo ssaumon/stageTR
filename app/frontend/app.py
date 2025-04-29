@@ -49,6 +49,7 @@ def create_iot():
     err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
+        nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
         if re.match(r" ",nom):
             err="Il y a un espace dans : "+nom
         elif int(ram)<512:
@@ -57,7 +58,7 @@ def create_iot():
             err="CPUs insuffisants : "+cpu+" < 1"
         else:
             #r=requests.post(f"{backip}:5000/createiot",data=data)
-            nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
+            
             cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
             cnx.commit()
             subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
