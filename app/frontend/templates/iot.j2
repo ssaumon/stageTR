@@ -1,88 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Application</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
+
+  <head>
+    <title>Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
 
     <div class="d-flex">
-        <div class="bg-dark text-white" id="sidebar" style="width: 250px; height: 100vh; padding: 10px; border-right: 1px solid #444;">
-            <h3 class="text-center">Menu</h3>
-            
-            <a href="http://192.168.98.90:80/" class="btn btn-dark w-100 text-start mb-2 mt-3">Monitoring</a>
-            
-            
-            <div class="accordion mb-2" id="accordionExample">
-                <div class="accordion-item bg-dark border-0">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button text-white bg-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        créer une VM
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body bg-dark">
-                            
-                            <a href="http://192.168.98.90:80/edge" class="nav-link btn btn-dark text-white">Edge</a>
-                            
-                            <a href="http://192.168.98.90:80/iot" class="nav-link btn btn-dark text-white active">IoT</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+      <div class="bg-dark text-white" id="sidebar" style="width: 250px; height: 100vh; padding: 10px; border-right: 1px solid #444;">
+        <h3 class="text-center">Menu</h3>
 
-            <a href="http://192.168.98.90:80/newapp" class="btn btn-dark w-100 text-start mb-2">Créer une application</a>
-            
-            
-        </div>
-        <div class="container-fluid">
+        <a href="http://192.168.98.90:80/" class="btn btn-dark w-100 text-start mb-2 mt-3">Monitoring</a>
 
-      
-        <h1 class="d-flex justify-content-center">VM IoT</h1>
-        <div class="d-flex justify-content-end m-4">
-            <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
-                Ajouter une VM IoT
-          </button>
-        </div>
 
-        <div class="modal fade " id="modal" >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Ajouter une VM IoT</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+        <div class="accordion mb-2" id="accordionExample">
+          <div class="accordion-item bg-dark border-0">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button text-white bg-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                créer une VM
+              </button>
+            </h2>
 
-                    <div class="modal-body justify-content-center">
-                    
-                    <form class="form" action="http://192.168.98.90:80/createiot" method="post">
-                        <div class="mb-3 mt-3">
-                        <label for="nom" class="form-label">Nom :</label>
-                        <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
-                        </div>
-                        <div class="mb-3">
-                        <label for="ram" class="form-label">RAM (Mo) :</label>
-                        <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
-                        </div>
-
-                        <div class="mb-3">
-                        <label for="cpu" class="form-label">CPU :</label>
-                        <input type="number" class="form-control" id="cpu" name="cpu">
-                        </div>
-
-                        <button type="submit" class="btn btn-dark">Ajouter</button>
-                    </form> 
-                </div>
-
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-dark">
+                <a href="http://192.168.98.90:80/edge" class="nav-link btn btn-dark text-white">Edge</a>
+                <a href="http://192.168.98.90:80/iot" class="nav-link btn btn-dark text-white active">IoT</a>
+              </div>
             </div>
           </div>
         </div>
 
+
+        <a href="http://192.168.98.90:80/newapp" class="btn btn-dark w-100 text-start mb-2">Créer une application</a>
       </div>
 
+      <div class="container-fluid">
+          <h1 class="d-flex justify-content-center">VM IoT</h1>
+          <div class="d-flex justify-content-end m-4">
+            <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+              Ajouter une VM IoT
+            </button>
+          </div>
+        
+            <div class="m-4">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nom</th>
+                      <th scope="col">CPU</th>
+                      <th scope="col">RAM</th>
+                      <th scope="col">état</th>
+                      <th scope="col">supprimer</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for nom,cpu,ram,etat in vms %}
+                    <tr>
+                      <td>{{nom}}</td>
+                      <td>{{cpu}}</td>
+                      <td>{{ram}}</td>
+                      <td>{{etat}}</td>
+                      <td>
+                        <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
+                        Supprimer
+                        </button>
+                      </td>
+                    </tr>
+                    
+                    <div class="modal fade " id="modal{{nom}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Supprimer la VM {{nom}} ?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal{{nom}}"></button>
+                          </div>
+                          <div class="modal-body justify-content-center">
+                            <form class="form" action="http://192.168.98.90:80/deledge" method="post">
+                              <input type="hidden" name="nom" value="{{nom}}">
+          
+                              <button type="submit" class="btn btn-dark">Supprimer</button>
+                            </form> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+            <div class="modal fade " id="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Ajouter une VM IoT</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body justify-content-center">
+
+                            <form class="form" action="http://192.168.98.90:80/createiot" method="post">
+                                <div class="mb-3 mt-3">
+                                    <label for="nom" class="form-label">Nom :</label>
+                                    <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM"
+                                        name="nom">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ram" class="form-label">RAM (Mo) :</label>
+                                    <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="cpu" class="form-label">CPU :</label>
+                                    <input type="number" class="form-control" id="cpu" name="cpu">
+                                </div>
+
+                                <button type="submit" class="btn btn-dark">Ajouter</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
 </body>
+
 </html>
