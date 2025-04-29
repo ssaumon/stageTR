@@ -49,7 +49,10 @@ def create_iot():
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
         #r=requests.post(f"{backip}:5000/createiot",data=data)
-        subprocess.Popen(["./backend/createiot.sh", data["nom"], data["ram"], data["cpu"]])
+        nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
+        cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
+        cnx.commit()
+        subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
     return render_template("index.j2")
 
 @app.route("/deledge", methods=["POST"])
@@ -57,10 +60,11 @@ def delvm():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
+        print(nom)
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
-        subprocess.run(["./backend/deleteVM.sh", nom])
-    return render_template("newapp.j2")
+        subprocess.run(["./backend/deleteVM.sh "+nom])
+    return render_template("edge.j2")
 
 try:
     app.run(host="0.0.0.0", port=80)
