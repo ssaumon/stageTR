@@ -65,7 +65,9 @@ def delvm():
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
         subprocess.Popen(["./backend/deleteVM.sh", nom])
-    return render_template("edge.j2")
+    cur.execute("SELECT * from edge;")
+    vms=cur.fetchall()
+    return render_template("edge.j2", vms=vms)
 
 try:
     app.run(host="0.0.0.0", port=80)
