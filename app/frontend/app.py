@@ -34,6 +34,7 @@ def newapp():
 
 @app.route("/createedge", methods=["POST"])
 def create_edge():
+    err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys():
         #r=requests.post(f"{backip}:5000/createedge",data=data)
