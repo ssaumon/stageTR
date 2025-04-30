@@ -50,7 +50,7 @@ def create_iot():
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
         nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
-        if re.match(r" ",nom):
+        if re.search(r" ",nom):
             err="Il y a un espace dans : "+nom
         elif int(ram)<512:
             err="RAM insuffisante : "+ram+" < 512"
