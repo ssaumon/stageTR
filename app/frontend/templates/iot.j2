@@ -67,7 +67,7 @@
                 <td>{{ram}}</td>
                 <td>{{etat}}</td>
                 <td>
-                  <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
+                  <button type="button" class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
                   Supprimer
                   </button>
                 </td>
@@ -78,7 +78,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel">Supprimer la VM {{nom}} ?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal{{nom}}"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
                       <form class="form" action="http://192.168.98.90:80/deliot" method="post">

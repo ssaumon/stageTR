@@ -85,7 +85,7 @@
                       <form class="form" action="http://192.168.98.90:80/delapp" method="post">
                         <input type="hidden" name="nom" value="{{nom}}">
     
-                        <button type="submit" class="btn btn-alert">Supprimer</button>
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
                       </form> 
                     </div>
                   </div>
@@ -102,7 +102,7 @@
                       <form class="form" action="http://192.168.98.90:80/modifapp" method="post">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
-                          <textarea class="form-control" id="man" placeholder="Manifest" name="man" value="{{manifest}}"></textarea>
+                          <textarea class="form-control" id="man" placeholder="Manifest" name="man">{{manifest}}</textarea>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
                       </form> 
