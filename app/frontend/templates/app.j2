@@ -102,6 +102,7 @@
                       <form class="form" action="http://192.168.98.90:80/modifapp" method="post">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
+                          <input type="hidden" value="{{nom}}" name="nom"/>
                           <textarea class="form-control" id="man" placeholder="Manifest" name="man">{{manifest}}</textarea>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
