@@ -96,6 +96,30 @@ def create_iot():
 
 
 
+@app.route("/createapp", methods=["POST"])
+def create_app():
+    err=None
+    data = request.form.to_dict()
+    if "nom" in data.keys() and "manifest" in data.keys():
+        nom,manifest=data["nom"],data["manifest"]
+        cur.execute("SELECT nom from applications;")
+        li=[n[0] for n in cur.fetchall()]
+        if nom in li:
+            err="l'application "+nom+" existe déjà"
+        elif re.search(r"\s",nom):
+            err="Il y a un espace dans : "+nom
+        else:
+            #r=requests.post(f"{backip}:5000/createapp",data=data)
+            man = re.sub('"','\"',manifest)
+            cur.execute("INSERT INTO applications VALUES (%s, %s);", (nom,man))
+            cnx.commit()
+    cur.execute("SELECT * from applications;")
+    apps=cur.fetchall()
+    return render_template("app.j2", apps=apps, err=err)
+
+
+
+
 @app.route("/deledge", methods=["POST"])
 def deledge():
     data = request.form.to_dict()
