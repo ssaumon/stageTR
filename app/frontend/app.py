@@ -120,7 +120,7 @@ def create_app():
 
 
 @app.route("/delapp", methods=["POST"])
-def deledge():
+def delapp():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
