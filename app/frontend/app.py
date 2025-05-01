@@ -132,7 +132,6 @@ def delapp():
 
 
 
-
 @app.route("/deledge", methods=["POST"])
 def deledge():
     data = request.form.to_dict()
@@ -152,8 +151,6 @@ def deliot():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
-        print(nom)
-        print(Path.cwd())
         cur.execute("DELETE FROM iot WHERE nom = %s;", (nom,))
         cnx.commit()
         subprocess.Popen(["./backend/deleteVM.sh", nom])
@@ -161,6 +158,19 @@ def deliot():
     vms=cur.fetchall()
     return render_template("iot.j2", vms=vms)
 
+
+
+@app.route("/modifapp", methods=["POST"])
+def modifapp():
+    data = request.form.to_dict()
+    if "nom" in data.keys() and "manifest" in data.keys():
+        nom,manifest=data["nom"],data["manifest"]
+        man = re.sub('"','\"',manifest)
+        cur.execute("UPDATE applications SET manifes t= %s WHERE nom = %s;", (man,nom))
+        cnx.commit()
+    cur.execute("SELECT * from applications;")
+    apps=cur.fetchall()
+    return render_template("app.j2", apps=apps)
 
 
 try:
