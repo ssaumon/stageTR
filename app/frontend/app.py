@@ -119,6 +119,19 @@ def create_app():
 
 
 
+@app.route("/delapp", methods=["POST"])
+def deledge():
+    data = request.form.to_dict()
+    if "nom" in data.keys():
+        nom=data["nom"]
+        cur.execute("DELETE FROM applications WHERE nom = %s;", (nom,))
+        cnx.commit()
+    cur.execute("SELECT * from applications;")
+    apps=cur.fetchall()
+    return render_template("app.j2", apps=apps)
+
+
+
 
 @app.route("/deledge", methods=["POST"])
 def deledge():

@@ -79,7 +79,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel">Supprimer l'application {{nom}} ?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modalsuppr{{nom}}"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
                       <form class="form" action="http://192.168.98.90:80/delapp" method="post">
@@ -96,13 +96,13 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel">Modifier l'application {{nom}} ?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modalmodif{{nom}}"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
                       <form class="form" action="http://192.168.98.90:80/modifapp" method="post">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
-                          <textarea class="form-control" id="man" placeholder="Manifest" name="man"></textarea>
+                          <textarea class="form-control" id="man" placeholder="Manifest" name="man" value="{{manifest}}"></textarea>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
                       </form> 
