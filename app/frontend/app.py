@@ -164,6 +164,7 @@ def deliot():
 def modifapp():
     data = request.form.to_dict()
     print(data["nom"])
+    print(data["manifest"])
     if "nom" in data.keys() and "manifest" in data.keys():
         nom,manifest=data["nom"],data["manifest"]
         man = re.sub('"','\"',manifest)
