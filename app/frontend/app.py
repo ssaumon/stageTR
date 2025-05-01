@@ -29,9 +29,10 @@ def iot():
 
 @app.route("/app")
 def apps():
-    cur.execute("SELECT * from application;")
+    cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
     return render_template("app.j2", apps=apps)
+
 
 
 @app.route("/createedge", methods=["POST"])
@@ -61,6 +62,7 @@ def create_edge():
         cur.execute("SELECT * from edge;")
         vms=cur.fetchall()
     return render_template("edge.j2",vms=vms, err=err)
+
 
 
 @app.route("/createiot", methods=["POST"])
@@ -105,6 +107,8 @@ def deledge():
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
     return render_template("edge.j2", vms=vms)
+
+
 
 @app.route("/deliot", methods=["POST"])
 def deliot():
