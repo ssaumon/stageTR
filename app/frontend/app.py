@@ -28,7 +28,7 @@ def iot():
     return render_template("iot.j2",vms=vms)
 
 @app.route("/app")
-def app():
+def apps():
     cur.execute("SELECT * from application;")
     apps=cur.fetchall()
     return render_template("app.j2", apps=apps)
