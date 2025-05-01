@@ -167,7 +167,7 @@ def modifapp():
     if "nom" in data.keys() and "manifest" in data.keys():
         nom,manifest=data["nom"],data["manifest"]
         man = re.sub('"','\"',manifest)
-        cur.execute("UPDATE applications SET manifes t= %s WHERE nom = %s;", (man,nom))
+        cur.execute("UPDATE applications SET manifest = %s WHERE nom = %s;", (man,nom))
         cnx.commit()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
