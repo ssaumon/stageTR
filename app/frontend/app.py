@@ -27,9 +27,11 @@ def iot():
     vms=cur.fetchall()
     return render_template("iot.j2",vms=vms)
 
-@app.route("/newapp")
-def newapp():
-    return render_template("newapp.j2")
+@app.route("/app")
+def app():
+    cur.execute("SELECT * from application;")
+    apps=cur.fetchall()
+    return render_template("app.j2", apps=apps)
 
 
 @app.route("/createedge", methods=["POST"])
