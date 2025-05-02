@@ -7,7 +7,7 @@ do
             newhosts+="$li\n"
         fi
     else
-        newhosts+="$li\n"
+        newhosts+="$li"$'\n'
     fi
 done < "/etc/hosts"
 
