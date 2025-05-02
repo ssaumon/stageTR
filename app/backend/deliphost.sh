@@ -1,14 +1,12 @@
 hosts=$(cat /etc/hosts)
-newhosts=""
+echo "" > /etc/hosts
 while read -r li
 do
     if [[ "$li" =~ '192.*' ]]; then
         if [[ ! "$li" =~ " $1 " ]]; then
-            newhosts+="$li\n"
+            echo $li >> /etc/hosts
         fi
     else
-        newhosts+="$li"$'\n'
+        echo $li >> /etc/hosts
     fi
 done < "/etc/hosts"
-
-echo $newhosts > /etc/hosts
