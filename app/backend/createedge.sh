@@ -28,4 +28,4 @@ do
 echo "ok"
 ip=$(./backend/ipvm.sh $1)
 done
-echo "$ip $1" >> /etc/hosts
+echo "$ip $1 " >> /etc/hosts

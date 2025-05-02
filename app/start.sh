@@ -40,6 +40,7 @@ chmod +x backend/createedge.sh
 chmod +x backend/createiot.sh
 chmod +x backend/deleteVM.sh
 chmod +x backend/ipvm.sh
+chmod +x backend/deliphost.sh
 
 echo création de la base de données
 chmod +x backend/sql.sh
