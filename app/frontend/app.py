@@ -18,16 +18,22 @@ def majetatvm():
     cnx.cmd_reset_connection()
     cur=cnx.cursor()
     cur.execute("SELECT * from edge;")
-    vms=cur.fetchall()
+    vmsedge=cur.fetchall()
     listeVM = subprocess.run(["virsh", "list", "--all"],stdout=subprocess.PIPE,text=True)
     reponse=listeVM.stdout.split("\n")
-    etats=[]
+    etats={}
     for row in reponse:
-        if len(row.split())>1 and row.split()[0]!="Id":
-            etats.append(row.split()) 
+        r=row.split()
+        if len(r)>1 and r[0]!="Id":
+            st=""
+            for i in range (2,len(r)):
+                st+=r[i]
+            etats[r[1]]= st
     print(etats)
-    for vm in vms:
+    for vm in vmsedge:
         print(vm[3])
+        if vm[3] != "en création":
+            cur.execute("UPDATE edge SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
 
 
 @app.route("/")
