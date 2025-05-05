@@ -6,9 +6,11 @@ do
     if [[ "$li" =~ "192.*" ]]; then
         if [[ ! "$li" =~ "\s$1\s" ]]; then
             echo $li >> /etc/hosts.tmp
+            echo $li
         fi
     else
         echo $li >> /etc/hosts.tmp
+        echo "oui"
     fi
 done < "/etc/hosts"
 
