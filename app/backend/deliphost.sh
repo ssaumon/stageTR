@@ -1,6 +1,7 @@
 #!/bin/bash
 hosts=$(cat /etc/hosts)
-echo "" > /etc/hosts.tmp
+rm /etc/hosts.tmp
+touch /etc/hosts.tmp
 while read -r li
 do
     echo $li
