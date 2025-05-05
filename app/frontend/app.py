@@ -19,6 +19,8 @@ def majetatvm():
     cur=cnx.cursor()
     cur.execute("SELECT * from edge;")
     vmsedge=cur.fetchall()
+    cur.execute("SELECT * from iot;")
+    vmsiot=cur.fetchall()
     listeVM = subprocess.run(["virsh", "list", "--all"],stdout=subprocess.PIPE,text=True)
     reponse=listeVM.stdout.split("\n")
     etats={}
@@ -27,13 +29,18 @@ def majetatvm():
         if len(r)>1 and r[0]!="Id":
             st=""
             for i in range (2,len(r)):
-                st+=r[i]
+                st+=r[i]+" "
             etats[r[1]]= st
     print(etats)
     for vm in vmsedge:
         print(vm[3])
         if vm[3] != "en création":
             cur.execute("UPDATE edge SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
+            cnx.commit()
+    for vm in vmsiot:
+        print(vm[3])
+        if vm[3] != "en création":
+            cur.execute("UPDATE iot SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
             cnx.commit()
 
 
@@ -55,6 +62,7 @@ def edge():
 
 @app.route("/iot")
 def iot():
+    majetatvm()
     global cur
     cur.close()
     cnx.cmd_reset_connection()
