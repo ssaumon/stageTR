@@ -1,3 +1,4 @@
+#!/bin/bash
 hosts=$(cat /etc/hosts)
 echo "" > /etc/hosts.tmp
 while read -r li
