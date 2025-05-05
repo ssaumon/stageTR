@@ -19,7 +19,7 @@ def index():
 @app.route("/edge")
 def edge():
     global cur
-    cnx.reconnect()
+    cnx.cmd_reset_connection()
     cur=cnx.cursor()
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
@@ -29,7 +29,7 @@ def edge():
 @app.route("/iot")
 def iot():
     global cur
-    cnx.reconnect()
+    cnx.cmd_reset_connection()
     cur=cnx.cursor()
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
@@ -39,7 +39,7 @@ def iot():
 @app.route("/app")
 def apps():
     global cur
-    cnx.reconnect()
+    cnx.cmd_reset_connection()
     cur=cnx.cursor()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
