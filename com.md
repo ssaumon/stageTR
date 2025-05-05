@@ -37,3 +37,7 @@ création d'un executable qui verifie les dépendances de l'appllication et qui 
 
 ansible
 vagrantfile regarder pour automatiser la création de vm
+
+
+
+
