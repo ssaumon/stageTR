@@ -21,7 +21,9 @@ def majetatvm():
     vms=cur.fetchall()
     listeVM = subprocess.run(["virsh", "list", "--all"],stdout=subprocess.PIPE,text=True)
     etats=listeVM.stdout.split("\n")
-    print(etats[2])
+    for row in etats:
+        row = row.split(" ")
+    print(etats[2][1])
     for vm in vms:
         print("oui")
 
