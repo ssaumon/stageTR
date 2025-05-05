@@ -28,5 +28,5 @@ do
 ip=$(./backend/ipvm.sh $1)
 done
 echo "$ip $1 " >> /etc/hosts
-mysql -u root --password='bonjour' --database=BDD_VMs -e "UPDATE edge SET statut = running WHERE nom = '$1'"
+mysql -u root --password='bonjour' --database=BDD_VMs -e "UPDATE edge SET statut = 'running' WHERE nom = '$1'"
 echo "VM créée"
