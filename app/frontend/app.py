@@ -34,6 +34,7 @@ def majetatvm():
         print(vm[3])
         if vm[3] != "en création":
             cur.execute("UPDATE edge SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
+            cnx.commit()
 
 
 @app.route("/")
