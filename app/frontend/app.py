@@ -23,7 +23,8 @@ def majetatvm():
     etats=listeVM.stdout.split("\n")
     for row in etats:
         row=row.split()
-    print(etats[2][2])
+        print(row)
+    #print(etats[2][2])
     for vm in vms:
         print("oui")
 
