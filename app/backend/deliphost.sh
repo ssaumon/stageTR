@@ -8,11 +8,9 @@ do
     if [[ "$li" =~ 192.* ]]; then
         if [[ ! "$li" =~  $1$ ]]; then
             echo $li >> /etc/hosts.tmp
-            echo $li
         fi
     else
         echo $li >> /etc/hosts.tmp
-        echo "oui"
     fi
 done < "/etc/hosts"
 

@@ -27,7 +27,7 @@ def majetatvm():
             etats.append(row.split()) 
     print(etats)
     for vm in vms:
-        print("oui")
+        print(vm[3])
 
 
 @app.route("/")
