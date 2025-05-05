@@ -31,14 +31,11 @@ def majetatvm():
             for i in range (2,len(r)):
                 st+=r[i]+" "
             etats[r[1]]= st
-    print(etats)
     for vm in vmsedge:
-        print(vm[3])
         if vm[3] != "en création":
             cur.execute("UPDATE edge SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
             cnx.commit()
     for vm in vmsiot:
-        print(vm[3])
         if vm[3] != "en création":
             cur.execute("UPDATE iot SET statut = %s WHERE nom = %s",(etats[vm[0]],vm[0]))
             cnx.commit()
