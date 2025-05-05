@@ -25,7 +25,8 @@ sudo virt-install --name $1 --os-type linux --os-variant detect=on --memory $2 -
 ip=""
 while [ -z $ip ];
 do
-echo "ok"
 ip=$(./backend/ipvm.sh $1)
 done
 echo "$ip $1 " >> /etc/hosts
+mysql -u root --password='bonjour' --database=BDD_VMs -e "UPDATE edge SET statut = running WHERE nom = $1"
+echo "VM créée"
