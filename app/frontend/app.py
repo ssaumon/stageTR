@@ -8,7 +8,6 @@ import re
 cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD_VMs",password="bonjour")
 
 cur=cnx.cursor()
-
 app = Flask(__name__)
 
 backip=subprocess.run(["echo", "$BACKIP"]).stdout
@@ -19,6 +18,8 @@ def index():
 
 @app.route("/edge")
 def edge():
+    global cur
+    cnx.reconnect()
     cur=cnx.cursor()
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
@@ -27,6 +28,8 @@ def edge():
 
 @app.route("/iot")
 def iot():
+    global cur
+    cnx.reconnect()
     cur=cnx.cursor()
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
@@ -35,6 +38,8 @@ def iot():
 
 @app.route("/app")
 def apps():
+    global cur
+    cnx.reconnect()
     cur=cnx.cursor()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
