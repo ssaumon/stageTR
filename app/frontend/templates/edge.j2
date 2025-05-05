@@ -62,12 +62,12 @@
               </tr>
             </thead>
             <tbody>
-              {% for nom,cpu,ram,etat in vms %}
+              {% for nom,cpu,ram,statut in vms %}
               <tr>
                 <td>{{nom}}</td>
                 <td>{{cpu}}</td>
                 <td>{{ram}}</td>
-                <td>{{etat}}</td>
+                <td>{{statut}}</td>
                 <td>
                   <button type="button" class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
                   Supprimer
