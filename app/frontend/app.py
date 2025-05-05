@@ -20,7 +20,7 @@ def majetatvm():
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
     listeVM = subprocess.run(["virsh", "list", "--all"],stdout=subprocess.PIPE,text=True)
-    etats=listeVM.stdout
+    etats=listeVM.stdout.split("\n")
     print(etats[2])
     for vm in vms:
         print("oui")
