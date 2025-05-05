@@ -4,8 +4,8 @@ echo "" > /etc/hosts.tmp
 while read -r li
 do
     echo $li
-    if [[ "$li" =~ "192.*" ]]; then
-        if [[ ! "$li" =~ " $1$" ]]; then
+    if [[ "$li" =~ 192.* ]]; then
+        if [[ ! "$li" =~  $1$ ]]; then
             echo $li >> /etc/hosts.tmp
             echo $li
         fi
