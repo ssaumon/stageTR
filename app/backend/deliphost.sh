@@ -13,4 +13,4 @@ do
 done < "/etc/hosts"
 
 rm /etc/hosts
-mv /etc/hosts.tmp /etc/hosts
+cp /etc/hosts.tmp /etc/hosts

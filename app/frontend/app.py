@@ -12,12 +12,26 @@ app = Flask(__name__)
 
 backip=subprocess.run(["echo", "$BACKIP"]).stdout
 
+def majetatvm():
+    global cur
+    cur.close()
+    cnx.cmd_reset_connection()
+    cur=cnx.cursor()
+    cur.execute("SELECT * from edge;")
+    vms=cur.fetchall()
+    listeVM = subprocess.run(["virsh", "list", "--all"],stdout=subprocess.PIPE,text=True)
+    print(listeVM.stdout)
+    for vm in vms:
+        print("oui")
+
+
 @app.route("/")
 def index():
     return render_template("index.j2")
 
 @app.route("/edge")
 def edge():
+    majetatvm()
     global cur
     cur.close()
     cnx.cmd_reset_connection()
