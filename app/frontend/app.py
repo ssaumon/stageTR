@@ -67,8 +67,8 @@ def iot():
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
     cur.execute("SELECT nom from edge;")
-    clusters=cur.fetchall()
-    return render_template("iot.j2",clusters=clusters)
+    clusters=[n[0] for n in cur.fetchall()]
+    return render_template("iot.j2",vms=vms, clusters=clusters)
 
 @app.route("/app")
 def apps():
