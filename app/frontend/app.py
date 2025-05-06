@@ -205,7 +205,7 @@ def deliot():
         subprocess.Popen(["./backend/deleteVM.sh", nom])
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return render_template("iot.j2", vms=vms)
+    return iot()
 
 
 
