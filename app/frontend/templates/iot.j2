@@ -128,12 +128,16 @@
                         Cluster
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
                         {% for cluster in clusters %}
 
-                        <input type="radio" class="dropdown-item" name="cluster" id="{{cluster}}" autocomplete="off">
-                        <label class="btn btn-secondary" for="{{cluster}}">{{cluster}}</label>
-
+                        <div class="dropdown-item">
+                          <input type="radio" class="btn" name="cluster" id="{{cluster}}">
+                          <label class="btn btn-secondary" for="{{cluster}}">{{cluster}}</label>
+                        </div>
+                        
                         {% endfor %}
+
                       </div>
                     </div>
                   </div>
