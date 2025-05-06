@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS iot (
     nom VARCHAR(255) PRIMARY KEY,
     cpu INT NOT NULL,
     ram INT NOT NULL,
-    statut VARCHAR(255)
+    statut VARCHAR(255),
+    cluster VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS applications (
