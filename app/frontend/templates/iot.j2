@@ -131,10 +131,10 @@
 
                         {% for cluster in clusters %}
 
-                        <div class="dropdown-item">
-                          <input type="radio" class="btn-check" name="cluster" autocomplete="off" id="{{cluster}}">
-                          <label class="btn btn-secondary" for="{{cluster}}">{{cluster}}</label>
-                        </div>
+                        
+                        <input type="radio" class="dropdown-item btn-check" name="cluster" autocomplete="off" id="{{cluster}}">
+                        <label class="btn btn-secondary" for="{{cluster}}">{{cluster}}</label>
+                        
                         
                         {% endfor %}
 
