@@ -128,9 +128,12 @@
                         Cluster
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        {% for cluster in clusters %}
+
+                        <input type="radio" class="dropdown-item" name="cluster" id="{{cluster}}" autocomplete="off">
+                        <label class="btn btn-secondary" for="{{cluster}}">{{cluster}}</label>
+
+                        {% endfor %}
                       </div>
                     </div>
                   </div>

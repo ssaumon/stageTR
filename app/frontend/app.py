@@ -66,7 +66,9 @@ def iot():
     cur=cnx.cursor()
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return render_template("iot.j2",vms=vms)
+    cur.execute("SELECT nom from edge;")
+    clusters=cur.fetchall()
+    return render_template("iot.j2",clusters=clusters)
 
 @app.route("/app")
 def apps():
@@ -114,8 +116,8 @@ def create_edge():
 def create_iot():
     err=None
     data = request.form.to_dict()
-    if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
-        nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
+    if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys() and "cluster" in data.keys():
+        nom,ram,cpu,cluster=data["nom"],data["ram"],data["cpu"],data["cluster"]
         cur.execute("SELECT nom from iot;")
         li=[n[0] for n in cur.fetchall()]
         cur.execute("SELECT nom from edge;")
@@ -132,12 +134,14 @@ def create_iot():
         else:
             #r=requests.post(f"{backip}:5000/createiot",data=data)
             
-            cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
+            cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création',%s);", (nom,cpu,ram,cluster))
             cnx.commit()
             subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
+    else: 
+        err="Il manque des informations"
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return render_template("iot.j2",vms=vms, err=err)
+    return iot()
 
 
 
