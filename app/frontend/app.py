@@ -141,7 +141,9 @@ def create_iot():
         err="Il manque des informations"
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return iot()
+    cur.execute("SELECT nom from edge;")
+    clusters=[n[0] for n in cur.fetchall()]
+    return render_template("iot.j2",vms=vms, clusters=clusters,err=err)
 
 
 
@@ -205,7 +207,9 @@ def deliot():
         subprocess.Popen(["./backend/deleteVM.sh", nom])
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
-    return iot()
+    cur.execute("SELECT nom from edge;")
+    clusters=[n[0] for n in cur.fetchall()]
+    return render_template("iot.j2", vms=vms, clusters=clusters)
 
 
 
