@@ -13,3 +13,5 @@ chpasswd:
     ubuntu:bonjour
   expire: False
 
+bootcmd:
+  -  {{k3scmd}}
