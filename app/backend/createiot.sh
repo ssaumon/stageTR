@@ -10,7 +10,7 @@ fi
 ipedge=$(./backend/ipvm.sh $2)
 
 touch backend/cloudinit/user-data.d/$1
-cmd="curl -sfL https://get.k3s.io | K3S_URL=https://$ipedge:6443 K3S_TOKEN=$2 sh - "
+cmd="K3S_URL=https://$ipedge:6443 K3S_TOKEN=$2 sh - "
 cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s/{{k3scmd}}/$cmd/g" > backend/cloudinit/user-data.d/$1
 
 

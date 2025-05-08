@@ -14,4 +14,4 @@ chpasswd:
   expire: False
 
 runcmd:
-  -  {{k3scmd}}
+  -  curl -sfL https://get.k3s.io | {{k3scmd}}
