@@ -136,7 +136,7 @@ def create_iot():
             
             cur.execute("INSERT INTO iot VALUES (%s, %s,%s,'en création',%s);", (nom,cpu,ram,cluster))
             cnx.commit()
-            subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu])
+            subprocess.Popen(["./backend/createiot.sh", nom, ram, cpu, cluster])
     else: 
         err="Il manque des informations"
     cur.execute("SELECT * from iot;")

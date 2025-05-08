@@ -7,7 +7,7 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
     mkdir backend/cloudinit/user-data.d
 fi
 
-ipedge=$(./backend/ipvm.sh $2)
+ipedge=$(./backend/ipvm.sh $4)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="K3S_URL=https://$ipedge:6443 K3S_TOKEN=$2 sh - "
