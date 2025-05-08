@@ -7,16 +7,18 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
     mkdir backend/cloudinit/user-data.d
 fi
 
+ipedge=$(./backend/ipvm.sh $2)
 
 touch backend/cloudinit/user-data.d/$1
-cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s/{{k3scmd}}/curl -sfL https://get.k3s.io | K3S_URL=https://$ipedge:6443 K3S_TOKEN=$2 sh -/g" > backend/cloudinit/user-data.d/$1
+cmd="curl -sfL https://get.k3s.io | K3S_URL=https://$ipedge:6443 K3S_TOKEN=$2 sh - "
+cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s/{{k3scmd}}/$cmd/g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
     mkdir backend/cloudinit/meta-data.d
 fi
 
-ipedge=$(./backend/ipvm.sh $2)
+
 
 touch backend/cloudinit/meta-data.d/$1
 cat --show-tabs backend/cloudinit/meta-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/meta-data.d/$1
