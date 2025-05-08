@@ -10,7 +10,7 @@ fi
 
 touch backend/cloudinit/user-data.d/$1
 cmd="curl -sfL https://get.k3s.io | sh -s - --token $1"
-cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s/{{k3scmd}}/$cmd/g" > backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
