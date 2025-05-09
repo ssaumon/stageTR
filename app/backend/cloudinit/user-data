@@ -14,7 +14,5 @@ chpasswd:
   expire: False
 
 runcmd:
-  -  curl -sfL https://get.k3s.io | {{k3scmd}}
-  -  mkdir /var/lib/rancher/k3s/server/manifests/shared
-  -  mount -t virtiofs shared /var/lib/rancher/k3s/server/manifests/shared
+  -  curl -sfL https://get.k3s.io | {{k3scmd}} && mkdir -p /var/lib/rancher/k3s/server/manifests/shared && mount -t virtiofs shared /var/lib/rancher/k3s/server/manifests/shared
 
