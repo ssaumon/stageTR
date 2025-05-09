@@ -6,3 +6,4 @@
  rm backend/cloudinit/user-data.d/$1
  rm backend/cloudinit/meta-data.d/$1
  rm /mnt/vms/$1.qcow2
+ rm backend/shared/$1
