@@ -239,6 +239,7 @@ def modifapp():
 @app.route("/affectapp", methods=["POST"])
 def affectapp():
     data = request.form.to_dict()
+    print(data)
     if "cluster" in data.keys() and "applis" in data.keys():
         cur.execute("SELECT * FROM applications")
         cluster,applis=data["cluster"],cur.fetchall()
@@ -247,6 +248,7 @@ def affectapp():
                 subprocess.run(["touch", f"backend/shared/{cluster}/{appli[0]}"])
                 with open(f"backend/shared/{cluster}/{appli[0]}","w")as f:
                     f.write(appli[1])
+    return render_template("index.j2")
 
 try:
     app.run(host="0.0.0.0", port=80)
