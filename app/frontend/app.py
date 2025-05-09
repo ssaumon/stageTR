@@ -245,7 +245,7 @@ def affectapp():
         for appli in applis:
             if appli[0] in data["applis"]:
                 subprocess.run(["touch", f"backend/shared/{cluster}/{appli[0]}"])
-                with open(f"backend/shared/{cluster}/{appli[0]}")as f:
+                with open(f"backend/shared/{cluster}/{appli[0]}","w")as f:
                     f.write(appli[1])
 
 try:
