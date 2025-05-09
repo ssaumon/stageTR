@@ -10,7 +10,7 @@ fi
 
 touch backend/cloudinit/user-data.d/$1
 cmd="sh -s - --token $1 && mkdir -p /var/lib/rancher/k3s/server/manifests/shared && mount -t virtiofs shared /var/lib/rancher/k3s/server/manifests/shared"
-cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s/{{k3scmd}}/$cmd/g" > backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
