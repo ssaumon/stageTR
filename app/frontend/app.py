@@ -244,7 +244,9 @@ def affectapp():
         cluster,applis=data["cluster"],cur.fetchall()
         for appli in applis:
             if appli[0] in data["applis"]:
-                subprocess.run(["./backend/affectapp.sh", appli[0], f"{cluster}", appli[1]])
+                subprocess.run(["touch", f"backend/shared/{cluster}/{appli[0]}"])
+                with open(f"backend/shared/{cluster}/{appli[0]}")as f:
+                    f.write(appli[1])
 
 try:
     app.run(host="0.0.0.0", port=80)
