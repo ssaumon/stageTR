@@ -18,4 +18,3 @@ runcmd:
   -  mkdir /var/lib/rancher/k3s/server/manifests/shared
   -  mount -t virtiofs shared /var/lib/rancher/k3s/server/manifests/shared
 
-bootcmd:
