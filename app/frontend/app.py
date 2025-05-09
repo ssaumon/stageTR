@@ -54,8 +54,10 @@ def edge():
     cur=cnx.cursor()
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
+    cur.execute("SELECT * from applications;")
+    applis=cur.fetchall()
     
-    return render_template("edge.j2",vms=vms)
+    return render_template("edge.j2",vms=vms, applis=applis)
 
 @app.route("/iot")
 def iot():
@@ -234,6 +236,14 @@ def modifapp():
     apps=cur.fetchall()
     return render_template("app.j2", apps=apps)
 
+@app.route("/affectapp", methods=["POST"])
+def affectapp():
+    data = request.form.to_dict()
+    if "cluster" in data.keys() and "applis" in data.keys():
+        cur.execute("SELECT * FROM applications WHERE nom = %s",(data["applis"]))
+        cluster,applis=data["cluster"],cur.fetchall()
+        for appli in applis:
+            subprocess.run(["./backend/affectapp.sh", appli[0], cluster, appli[1]])
 
 try:
     app.run(host="0.0.0.0", port=80)

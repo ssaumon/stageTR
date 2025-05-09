@@ -1,0 +1,1 @@
+echo $1 > backend/shared/$2/$3

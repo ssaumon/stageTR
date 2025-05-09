@@ -58,7 +58,7 @@
                 <th scope="col">CPU</th>
                 <th scope="col">RAM</th>
                 <th scope="col">état</th>
-                <th scope="col">supprimer</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -70,7 +70,11 @@
                 <td>{{statut}}</td>
                 <td>
                   <button type="button" class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
-                  Supprimer
+                    Supprimer
+                  </button>
+
+                  <button type="button" class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#app{{nom}}">
+                    Supprimer
                   </button>
                 </td>
               </tr>
@@ -88,6 +92,45 @@
     
                         <button type="submit" class="btn btn-dark">Supprimer</button>
                       </form> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="modal fade " id="app{{nom}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Supprimer la VM {{nom}} ?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body justify-content-center">
+                      <form class="form" action="http://192.168.98.90:80/affectapp" method="post">
+                        
+                        <div class="mb-3">
+                          <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Applications
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <input type="hidden" name="cluster" value="{{nom}}">
+      
+                              {% for nomapp,man in applis %}
+      
+                              
+                              <input type="radio" class=" btn-check" name="applis" autocomplete="off" value="{{nomapp}}" id="{{nomapp}}">
+                              <label class="btn btn-secondary dropdown-item" for="{{nomapp}}">{{nomapp}}</label>
+                              
+                              
+                              {% endfor %}
+      
+                            </div>
+                          </div>
+                        </div>
+      
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                      </form>
                     </div>
                   </div>
                 </div>
