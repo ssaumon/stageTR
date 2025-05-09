@@ -240,10 +240,11 @@ def modifapp():
 def affectapp():
     data = request.form.to_dict()
     if "cluster" in data.keys() and "applis" in data.keys():
-        cur.execute("SELECT * FROM applications WHERE nom = %s",(data["applis"]))
+        cur.execute("SELECT * FROM applications")
         cluster,applis=data["cluster"],cur.fetchall()
         for appli in applis:
-            subprocess.run(["./backend/affectapp.sh", appli[0], cluster, appli[1]])
+            if appli[0] in data["applis"]:
+                subprocess.run(["./backend/affectapp.sh", appli[0], cluster, appli[1]])
 
 try:
     app.run(host="0.0.0.0", port=80)
