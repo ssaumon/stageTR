@@ -190,12 +190,12 @@ def deledge():
         nom=data["nom"]
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
-        subprocess.Popen(["./backend/deleteVM.sh", nom])
+        subprocess.run(["./backend/deleteVM.sh", nom])
 
         cur.execute("SELECT nom FROM iot WHERE cluster = %s", (nom,))
         iter = [n[0] for n in cur.fetchall()]
         for iot in iter:
-            subprocess.Popen(["./backend/deleteVM.sh", iot])
+            subprocess.run(["./backend/deleteVM.sh", iot])
             cur.execute("DELETE FROM iot WHERE nom = %s;", (iot,))
             cnx.commit()
 
