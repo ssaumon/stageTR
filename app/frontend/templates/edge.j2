@@ -113,19 +113,19 @@
 
                             <input type="hidden" name="cluster" value="{{nom}}">
                             
-                              
+                            <ul class="list-group">
       
-                            {% for nomapp,man in applis %}
-      
-                              
-                            <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nomapp}}">
-                            <label class="btn btn-secondary" for="{{nomapp}}">{{nomapp}}</label>
-                              
-                              
-                            {% endfor %}
+                              {% for nomapp,man in applis %}
+        
+                              <li class="list-group-item">
+                                <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nomapp}}">
+                                <label class="btn btn-secondary" for="{{nomapp}}">{{nomapp}}</label>
+                              </li>
+                                
+                              {% endfor %}
       
                             
-                          
+                          </ul>
                         </div>
       
                         <button type="submit" class="btn btn-primary">Ajouter</button>
