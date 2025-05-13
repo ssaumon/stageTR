@@ -117,9 +117,10 @@
       
                               {% for nomapp,man in applis %}
         
-                              <li class="list-group-item">
+                              <li class="list-group-item" for="{{nomapp}}">
                                 <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nomapp}}">
-                                <label class="btn btn-secondary" for="{{nomapp}}">{{nomapp}}</label>
+                                
+                                {{nomapp}}
                               </li>
                                 
                               {% endfor %}
