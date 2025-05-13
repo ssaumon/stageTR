@@ -113,20 +113,19 @@
 
                             <input type="hidden" name="cluster" value="{{nom}}">
                             
-                            <ul class="list-group">
+                            <div class="d-flex flex-wrap gap-2">
       
                               {% for nomapp,man in applis %}
         
-                              <li class="list-group-item" for="{{nomapp}}">
-                                <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nomapp}}">
-                                
-                                {{nomapp}}
-                              </li>
+                              
+                              <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nomapp}}">
+                              <label class="btn btn-secondary" for="{{nomapp}}">{{nomapp}}</label>
+
                                 
                               {% endfor %}
       
                             
-                          </ul>
+                            </div>
                         </div>
       
                         <button type="submit" class="btn btn-primary">Ajouter</button>
