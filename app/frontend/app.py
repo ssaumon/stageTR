@@ -238,7 +238,9 @@ def modifapp():
 
 @app.route("/affectapp", methods=["POST"])
 def affectapp():
-    data = request.form.to_dict()
+    data={}
+    data["cluster"] = request.form["cluster"]
+    data["applis"]=request.form.getlist('applis')
     print(data)
     if "cluster" in data.keys() and "applis" in data.keys():
         cur.execute("SELECT * FROM applications")
