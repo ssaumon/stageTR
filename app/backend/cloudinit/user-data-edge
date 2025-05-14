@@ -13,11 +13,34 @@ chpasswd:
     ubuntu:bonjour
   expire: False
 
+package_update: true
+packages:
+  - python3-pip
+
 runcmd:
-  -  curl -sfL https://get.k3s.io | {{k3scmd}}
+  - curl -sfL https://get.k3s.io | {{k3scmd}}
+  - chmod +x start.sh && ./start.sh
 
 write_files:
-  - path: /home/deployer_agent.py
+
+  - path: /home/ubuntu start.sh
     content: |
-      {{deployer}}
+      pip install flask
+      pip install subprocess
+       pip install requests
+      python3 deployer_agent.py
     append: true
+
+  - path: /home/ubuntu deployer_agent.py
+    content: |
+      import subprocess
+      from flask import Flask, request,jsonify
+      import requests
+
+      app = Flask(__name__)
+
+      @app.route("/")
+      def index():
+          return jsonify({"bonjour":"hello"})
+    append: true
+  

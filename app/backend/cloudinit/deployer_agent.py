@@ -1,2 +1,9 @@
-print("hello world")
-print( "je pense que ca plante la")
+import subprocess
+from flask import Flask, request,jsonify
+import requests
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return jsonify({"bonjour":"hello"})
