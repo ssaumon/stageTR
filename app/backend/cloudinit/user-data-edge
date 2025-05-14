@@ -25,7 +25,7 @@ package_update: true
 
 runcmd:
   - curl -sfL https://get.k3s.io | {{k3scmd}}
-  - apt install python3-pip && ./start.sh
+  - apt install -y python3-pip && ./start.sh
 
 write_files:
 
@@ -33,10 +33,10 @@ write_files:
     permissions: '0755'
     content: |
       apt update -y
-      apt install python3-pip
+      apt install -y python3-pip
       pip install flask
       pip install requests
-      python3 deployer_agent.py
+      nohup python3 deployer_agent.py > log.txt 2>&1 &
     append: true
 
   - path: /home/ubuntu/deployer_agent.py
@@ -50,5 +50,6 @@ write_files:
       @app.route("/")
       def index():
           return jsonify({"bonjour":"hello"})
+      app.run(host="0.0.0.0")
     append: true
   
