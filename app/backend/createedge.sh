@@ -7,22 +7,23 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
     mkdir backend/cloudinit/user-data.d
 fi
 
+dep=$(cat --backend/cloudinit/deployer_agent.py)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="sh -s - --token $1 && mkdir -p /var/lib/rancher/k3s/server/manifests/shared && mount -t virtiofs shared /var/lib/rancher/k3s/server/manifests/shared"
-cat --show-tabs backend/cloudinit/user-data | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/user-data-edge | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" | sed "s|{{deploy}}|$dep|g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
     mkdir backend/cloudinit/meta-data.d
 fi
 
-mkdir -p backend/shared/$1
+
 
 touch backend/cloudinit/meta-data.d/$1
 cat --show-tabs backend/cloudinit/meta-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/meta-data.d/$1
 
-sudo virt-install --name $1 --os-type linux --os-variant detect=on --memory $2 --vcpus $3 --network bridge=virbr10 --graphics none --disk path=/mnt/vms/$1.qcow2,size=20,bus=virtio,format=qcow2,backing_store="/home/jammy-server-cloudimg-amd64.img" --cloud-init user-data=backend/cloudinit/user-data.d/$1,meta-data=backend/cloudinit/meta-data.d/$1,network-config=backend/cloudinit/network-config-edge --import --noautoconsole --filesystem /home/ubuntu/stageTR/app/backend/shared/$1,shared,driver.type=virtiofs --memorybacking source.type=memfd,access.mode=shared
+sudo virt-install --name $1 --os-type linux --os-variant detect=on --memory $2 --vcpus $3 --network bridge=virbr10 --graphics none --disk path=/mnt/vms/$1.qcow2,size=20,bus=virtio,format=qcow2,backing_store="/home/jammy-server-cloudimg-amd64.img" --cloud-init user-data=backend/cloudinit/user-data.d/$1,meta-data=backend/cloudinit/meta-data.d/$1,network-config=backend/cloudinit/network-config-edge --import --noautoconsole
 
 ip=""
 while [ -z $ip ];
