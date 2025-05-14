@@ -13,8 +13,8 @@ chpasswd:
     ubuntu:bonjour
   expire: False
 
+
 package_update: true
-package_upgrade: true
 packages:
   - python3-pip
 
@@ -28,7 +28,6 @@ write_files:
     permissions: '0755'
     content: |
       pip install flask
-      pip install subprocess
       pip install requests
       python3 deployer_agent.py
     append: true
