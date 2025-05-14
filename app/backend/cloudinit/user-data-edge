@@ -23,7 +23,7 @@ runcmd:
 
 write_files:
 
-  - path: /home/ubuntu start.sh
+  - path: /home/ubuntu/start.sh
     content: |
       pip install flask
       pip install subprocess
@@ -31,7 +31,7 @@ write_files:
       python3 deployer_agent.py
     append: true
 
-  - path: /home/ubuntu deployer_agent.py
+  - path: /home/ubuntu/deployer_agent.py
     content: |
       import subprocess
       from flask import Flask, request,jsonify
