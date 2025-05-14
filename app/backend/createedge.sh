@@ -7,7 +7,7 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
     mkdir backend/cloudinit/user-data.d
 fi
 
-dep=$(cat --show-all backend/cloudinit/deployer_agent.py | sed 's/^/      /g')
+dep=$(sed 's/^/      /g' backend/cloudinit/deployer_agent.py)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="sh -s - --token $1"
