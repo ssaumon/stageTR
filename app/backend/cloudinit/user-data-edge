@@ -24,6 +24,9 @@ package_update: true
 
 
 runcmd:
+  - timedatectl set-ntp true
+  - systemctl restart systemd-timesyncd
+  - sleep 10
   - curl -sfL https://get.k3s.io | {{k3scmd}}
   - apt install -y python3-pip && ./start.sh
 
