@@ -19,15 +19,16 @@ packages:
 
 runcmd:
   - curl -sfL https://get.k3s.io | {{k3scmd}}
-  - chmod +x start.sh && ./start.sh
+  - ./start.sh
 
 write_files:
 
   - path: /home/ubuntu/start.sh
+    permissions: '0644'
     content: |
       pip install flask
       pip install subprocess
-       pip install requests
+      pip install requests
       python3 deployer_agent.py
     append: true
 
