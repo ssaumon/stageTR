@@ -14,6 +14,7 @@ chpasswd:
   expire: False
 
 package_update: true
+package_upgrade: true
 packages:
   - python3-pip
 
