@@ -13,7 +13,7 @@ chpasswd:
     ubuntu:bonjour
   expire: False
 
-
+timezone: US/Western
 package_update: true
 
 
@@ -26,6 +26,7 @@ write_files:
   - path: /home/ubuntu/start.sh
     permissions: '0755'
     content: |
+      apt update -y
       apt install python3-pip
       pip install flask
       pip install requests
