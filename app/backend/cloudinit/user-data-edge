@@ -13,7 +13,13 @@ chpasswd:
     ubuntu:bonjour
   expire: False
 
-timezone: US/Western
+ntp:
+  enabled: true
+  servers:
+    - ntp.ubuntu.com
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+
 package_update: true
 
 
