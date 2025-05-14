@@ -19,7 +19,7 @@ packages:
 
 runcmd:
   - curl -sfL https://get.k3s.io | {{k3scmd}}
-  - ./start.sh
+  - apt install python3-pip && ./start.sh
 
 write_files:
 
