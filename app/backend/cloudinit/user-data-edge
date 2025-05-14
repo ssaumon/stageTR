@@ -24,7 +24,7 @@ runcmd:
 write_files:
 
   - path: /home/ubuntu/start.sh
-    permissions: '0644'
+    permissions: '0755'
     content: |
       pip install flask
       pip install subprocess
