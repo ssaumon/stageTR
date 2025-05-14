@@ -8,7 +8,7 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
 fi
 
 dep=$(sed 's/^/      /g' backend/cloudinit/deployer_agent.py)
-
+echo $dep
 touch backend/cloudinit/user-data.d/$1
 cmd="sh -s - --token $1"
 cat --show-tabs backend/cloudinit/user-data-edge | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" | sed "s|{{deployer}}|$dep|g" > backend/cloudinit/user-data.d/$1
