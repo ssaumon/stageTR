@@ -28,15 +28,14 @@ runcmd:
   - systemctl restart systemd-timesyncd
   - sleep 10
   - curl -sfL https://get.k3s.io | {{k3scmd}}
-  - apt install -y python3-pip && ./start.sh
+  - su - ubuntu -c "bash /home/ubuntu/start.sh"
 
 write_files:
 
   - path: /home/ubuntu/start.sh
     permissions: '0755'
     content: |
-      apt update -y
-      apt install -y python3-pip
+      apt satisfy -y python3-pip
       pip install flask
       pip install requests
       nohup python3 deployer_agent.py > log.txt 2>&1 &
