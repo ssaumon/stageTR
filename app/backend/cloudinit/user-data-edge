@@ -36,6 +36,7 @@ write_files:
     permissions: '0755'
     content: |
       apt satisfy -y python3-pip
+      apt install -y python3-pip
       pip install flask
       pip install requests
       nohup python3 deployer_agent.py > log.txt 2>&1 &
