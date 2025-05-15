@@ -24,6 +24,7 @@ package_update: true
 
 
 runcmd:
+  - ntpdate -u ntp.ubuntu.com || true
   - timedatectl set-ntp true
   - systemctl restart systemd-timesyncd
   - sleep 10
