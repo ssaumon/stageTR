@@ -24,7 +24,7 @@ ntp:
 
 
 runcmd:
-  - date -s "2025-05-15 10:06:00"
+  - date -s "{{date}}"
   - timedatectl set-ntp true
   - systemctl restart systemd-timesyncd
   - sleep 10
