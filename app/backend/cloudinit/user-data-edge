@@ -16,6 +16,7 @@ chpasswd:
 ntp:
   enabled: true
   servers:
+    - time.google.com
     - ntp.ubuntu.com
     - 0.pool.ntp.org
     - 1.pool.ntp.org
@@ -37,7 +38,6 @@ write_files:
     permissions: '0755'
     content: |
       apt update -y
-      apt satisfy -y python3-pip
       apt install -y python3-pip
       pip install flask
       pip install requests
