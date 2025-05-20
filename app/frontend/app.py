@@ -247,10 +247,11 @@ def affectapp():
         cur.execute("SELECT * FROM applications")
         selected_applis,applis=data["applis"],cur.fetchall()
         for appli in applis:
+            cluster=data["cluster"]
             if appli[0] in selected_applis:
-                requests.post(f"{data["cluster"]}/create",data={"nom":appli[0],"manifest":appli[1]})
+                requests.post(f"{cluster}/create",data={"nom":appli[0],"manifest":appli[1]})
             else:
-                requests.post(f"{data["cluster"]}/delete",data={"nom":appli[0]})
+                requests.post(f"{cluster}/delete",data={"nom":appli[0]})
 
 """
 @app.route("/affectapp", methods=["POST"])
