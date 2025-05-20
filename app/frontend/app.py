@@ -236,6 +236,23 @@ def modifapp():
     apps=cur.fetchall()
     return render_template("app.j2", apps=apps)
 
+
+@app.route("/affectapp", methods=["POST"])
+def affectapp():
+    data={}
+    data["cluster"] = request.form["cluster"]
+    data["applis"]=request.form.getlist('applis')
+    print(data)
+    if "cluster" in data.keys() and "applis" in data.keys():
+        cur.execute("SELECT * FROM applications")
+        selected_applis,applis=data["applis"],cur.fetchall()
+        for appli in applis:
+            if appli[0] in selected_applis:
+                requests.post(f"{data["cluster"]}/create",data={"nom":appli[0],"manifest":appli[1]})
+            else:
+                requests.post(f"{data["cluster"]}/delete",data={"nom":appli[0]})
+
+"""
 @app.route("/affectapp", methods=["POST"])
 def affectapp():
     data={}
@@ -253,7 +270,7 @@ def affectapp():
             else:
                 subprocess.run(["rm", f"backend/shared/{cluster}/{appli[0]}"])
     return render_template("index.j2")
-
+"""
 try:
     app.run(host="0.0.0.0", port=80)
 finally:
