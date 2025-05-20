@@ -27,8 +27,6 @@ ntp:
 runcmd:
   - date -s "{{date}}"
   - timedatectl set-ntp true
-  - systemctl restart systemd-timesyncd
-  - sleep 10
   - curl -sfL https://get.k3s.io | {{k3scmd}}
   - bash /home/ubuntu/start.sh
 
@@ -41,7 +39,7 @@ write_files:
       apt install -y python3-pip
       pip install flask
       pip install requests
-      nohup python3 deployer_agent.py > log.txt 2>&1 &
+      nohup python3 deployer_agent.py
     append: true
 
   - path: /home/ubuntu/deployer_agent.py
@@ -65,13 +63,13 @@ write_files:
           if (not Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
               subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
               subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-          return 200
+          return "", 200
       @app.route("/delete")
       def delete():
           data=json.load(request.data)
           nom = data["nom"]
           subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-          return 200
+          return "", 200
       @app.route("/update")
       def update():
           data=json.load(request.data)
