@@ -6,7 +6,9 @@ import requests
 
 app = Flask(__name__)
 
-
+@app.route("/")
+def index():
+    return 200
 
 @app.route("/create")
 def create():
