@@ -249,9 +249,9 @@ def affectapp():
         for appli in applis:
             cluster=data["cluster"]
             if appli[0] in selected_applis:
-                requests.post(f"{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]})
+                requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]})
             else:
-                requests.post(f"{cluster}:5001/delete",data={"nom":appli[0]})
+                requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]})
 
 """
 @app.route("/affectapp", methods=["POST"])
