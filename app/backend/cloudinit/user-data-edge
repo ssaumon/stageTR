@@ -57,7 +57,7 @@ write_files:
       pip install flask
       pip install requests
       t=1
-      while [ $t ];
+      while [ $t -eq 1 ];
       do
         if [ -f /home/ubuntu/deployer_agent.py ]; then
           t=0
