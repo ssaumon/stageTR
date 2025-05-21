@@ -36,7 +36,7 @@ rep=""
 test=1
 while [ $test -eq 1 ];
 do
-    rep=$(curl $1:5001)
+    rep=$(curl --silent $1:5001)
     if [ "$rep" = "valid"  ]; then
         test=0
     fi
