@@ -17,7 +17,9 @@ def create():
     nom,manifest = data["nom"],data["manifest"]
     if (not Path(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}").is_file()):
         subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-        subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+        with open(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}", 'w') as f:
+            for row in manifest:
+                f.writelines(manifest)
     return "valide", 200
 @app.route("/delete", methods=["POST"])
 def delete():
