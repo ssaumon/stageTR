@@ -31,5 +31,16 @@ do
 ip=$(./backend/ipvm.sh $1)
 done
 echo "$ip $1 " >> /etc/hosts
+
+rep=""
+test=1
+while [ $test -eq 1 ];
+do
+    rep=$(curl $1:5001)
+    if [ "$rep" = "valid"  ]; then
+        test=0
+    fi
+done
+
 mysql -u root --password='bonjour' --database=BDD_VMs -e "UPDATE edge SET statut = 'running' WHERE nom = '$1'; COMMIT;"
 echo "VM créée"

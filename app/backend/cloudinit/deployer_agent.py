@@ -13,6 +13,7 @@ def index():
 @app.route("/create")
 def create():
     data=request.form.to_dict()
+    print(data)
     nom,manifest = data["nom"],data["manifest"]
     if (not Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
         subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
@@ -21,12 +22,14 @@ def create():
 @app.route("/delete")
 def delete():
     data=request.form.to_dict()
+    print(data)
     nom = data["nom"]
     subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     return "oui", 200
 @app.route("/update")
 def update():
     data=request.form.to_dict()
+    print(data)
     nom,manifest = data["nom"],data["manifest"]
     if (Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
         subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
