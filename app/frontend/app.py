@@ -252,6 +252,8 @@ def affectapp():
                 requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]})
             else:
                 requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]})
+    return render_template("index.j2")
+
 
 """
 @app.route("/affectapp", methods=["POST"])
