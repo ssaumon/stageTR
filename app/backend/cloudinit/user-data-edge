@@ -26,7 +26,6 @@ ntp:
 
 runcmd:
   - date -s "{{date}}"
-  - timedatectl set-ntp true
   - curl -sfL https://get.k3s.io | {{k3scmd}}
   - bash /home/ubuntu/start.sh
 
@@ -41,7 +40,6 @@ write_files:
 
       [Service]
       Type=simple
-      User=ubuntu
       ExecStart=nohup /usr/bin/python3 /home/ubuntu/deployer_agent.py
       Restart=always
 
@@ -53,7 +51,9 @@ write_files:
     permissions: '0755'
     content: |
       apt update -y
+      echo '1'
       apt install -y python3-pip
+      echo '2'
       pip install flask
       pip install requests
       t=True
@@ -61,10 +61,12 @@ write_files:
       do
         if [ -f /home/ubuntu/deployer_agent.py ]; then
           t=False
+          echo 'test'
         fi
       done
       systemctl enable deployer-agent.service
       systemctl start deployer-agent.service
+      echo 'fin'
 
     append: true
 
