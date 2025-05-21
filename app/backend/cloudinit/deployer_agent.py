@@ -19,7 +19,7 @@ def create():
         subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
         with open(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}", 'w') as f:
             f.writelines(manifest)
-        subprocess.run(["kubectl","apply"," -f",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+        subprocess.run(["kubectl","apply ","-f ",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     return "valide", 200
 @app.route("/delete", methods=["POST"])
 def delete():
