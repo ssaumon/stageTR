@@ -1,0 +1,12 @@
+[Unit]
+Description=Service deployer python
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+ExecStart=nohup /usr/bin/python3 /home/ubuntu/deployer_agent.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

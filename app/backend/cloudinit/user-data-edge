@@ -32,6 +32,23 @@ runcmd:
 
 write_files:
 
+  - path: /etc/systemd/system/deployer-agent.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Service deployer python
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=ubuntu
+      ExecStart=nohup /usr/bin/python3 /home/ubuntu/deployer_agent.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    append: true
+
   - path: /home/ubuntu/start.sh
     permissions: '0755'
     content: |
@@ -39,7 +56,16 @@ write_files:
       apt install -y python3-pip
       pip install flask
       pip install requests
-      nohup python3 deployer_agent.py
+      t=True
+      while [ $t ];
+      do
+        if [ -f /home/ubuntu/deployer_agent.py ]; then
+          t=False
+        fi
+      done
+      systemctl enable deployer-agent.service
+      systemctl start deployer-agent.service
+
     append: true
 
   - path: /home/ubuntu/deployer_agent.py
@@ -54,7 +80,7 @@ write_files:
 
       @app.route("/")
       def index():
-          return 200
+          return "valide", 200
 
       @app.route("/create")
       def create():
@@ -63,20 +89,20 @@ write_files:
           if (not Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
               subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
               subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-          return "", 200
+          return "oui", 200
       @app.route("/delete")
       def delete():
           data=json.load(request.data)
           nom = data["nom"]
           subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-          return "", 200
+          return "oui", 200
       @app.route("/update")
       def update():
           data=json.load(request.data)
           nom,manifest = data["nom"],data["manifest"]
           if (Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
               subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
-          
+          return "oui", 200
 
       app.run(host="0.0.0.0", port=5001)
     append: true
