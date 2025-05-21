@@ -56,11 +56,11 @@ write_files:
       echo '2'
       pip install flask
       pip install requests
-      t=True
+      t=1
       while [ $t ];
       do
         if [ -f /home/ubuntu/deployer_agent.py ]; then
-          t=False
+          t=0
           echo 'test'
         fi
       done
