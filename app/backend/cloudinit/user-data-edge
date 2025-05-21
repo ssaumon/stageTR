@@ -64,6 +64,7 @@ write_files:
           echo 'test'
         fi
       done
+      mkdir var/lib/rancher/k3s/server/manifests/shared
       systemctl enable deployer-agent.service
       systemctl start deployer-agent.service
       echo 'fin'
