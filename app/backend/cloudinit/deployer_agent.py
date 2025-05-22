@@ -27,6 +27,7 @@ def delete():
     data=request.form.to_dict()
     print(data)
     nom = data["nom"]
+    subprocess.run(["kubectl","delete","-f",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     return "oui", 200
 
