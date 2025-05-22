@@ -256,7 +256,7 @@ def affectapp():
                 if (not cur.fetchone()) :
                     if requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]}).status_code==200:
                         man = re.sub('"','\"',appli[1])
-                        cur.execute("INSERT INTO associations VALUES (%s, %s);", (cluster,appli[0],man))
+                        cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli[0],man))
                         cnx.commit()
                 
             else:
