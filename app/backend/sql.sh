@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS associations (
     cluster VARCHAR(255),
     application VARCHAR(255),
     manifest TEXT,
-    PRIMARY KEY (cluster,application),
-    FOREIGN KEY (cluster) REFERENCES applications(nom)
+    PRIMARY KEY (cluster,application)
 );
 "

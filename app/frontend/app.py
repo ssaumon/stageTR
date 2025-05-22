@@ -263,7 +263,7 @@ def affectapp():
                 cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
                 if (cur.fetchone()) :
                     if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]}).status_code==200:
-                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0],man))
+                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0]))
                         cnx.commit()
                 
     return render_template("index.j2")
