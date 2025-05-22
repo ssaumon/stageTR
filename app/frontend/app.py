@@ -256,25 +256,27 @@ def affectapp():
 
         if bouton == "supprimer":
             for appli in selected_applis:
-                cur.execute("SELECT cluster, application FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                cur.execute("SELECT cluster, application FROM associations WHERE cluster = %s AND application = %s",(cluster,appli))
                 if (cur.fetchone):
-                    if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]}).status_code==200:
-                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0]))
+                    if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli}).status_code==200:
+                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli))
                         cnx.commit()
-                else: liste_invalides.append(appli[0])
+                else: liste_invalides.append(appli)
                 print(liste_invalides)
             if len(liste_invalides)>0:
                 err=""+liste_invalides+" sont des applications déjà absentes du cluster"
 
         elif bouton == "ajouter":
             for appli in selected_applis:
-                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                cur.execute("SELECT * FROM application WHERE nom = %s",(appli))
+                manifest=cur.fetchone()[0]
+                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli))
                 if (not cur.fetchone()) :
-                    if requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]}).status_code==200:
-                        man = re.sub('"','\"',appli[1])
-                        cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli[0],man))
+                    if requests.post(f"http://{cluster}:5001/create",data={"nom":appli,"manifest":manifest}).status_code==200:
+                        man = re.sub('"','\"',manifest)
+                        cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli,man))
                         cnx.commit()
-                else: liste_invalides.append(appli[0])
+                else: liste_invalides.append(appli)
             print(liste_invalides)
             if len(liste_invalides)>0:
                 err=""+liste_invalides+" sont des applications déjà présentes dans le cluster"
