@@ -264,7 +264,10 @@ def affectapp():
                 else: liste_invalides.append(appli)
                 print(liste_invalides)
             if len(liste_invalides)>0:
-                err=""+liste_invalides+" sont des applications déjà absentes du cluster"
+                err=""
+                for el in liste_invalides:
+                    err+=el
+                err+=" sont des applications déjà absentes du cluster"
 
         elif bouton == "ajouter":
             for appli in selected_applis:
@@ -279,7 +282,10 @@ def affectapp():
                 else: liste_invalides.append(appli)
             print(liste_invalides)
             if len(liste_invalides)>0:
-                err=""+liste_invalides+" sont des applications déjà présentes dans le cluster"
+                err=""
+                for el in liste_invalides:
+                    err+=el
+                err+=" sont des applications déjà présentes dans le cluster"
 
 
     cur.execute("SELECT * from edge;")
