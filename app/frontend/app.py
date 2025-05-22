@@ -241,6 +241,7 @@ def modifapp():
 
 @app.route("/affectapp", methods=["POST"])
 def affectapp():
+    err=None
     data={}
     data["cluster"] = request.form["cluster"]
     data["applis"]=request.form.getlist('applis')
@@ -250,7 +251,7 @@ def affectapp():
         selected_applis, applis, cluster, bouton=data["applis"], cur.fetchall(), data["cluster"], data["bouton"]
 
         liste_invalides=[]
-        err=None
+        
 
         if bouton == "supprimer":
             for appli in selected_applis:
