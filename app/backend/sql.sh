@@ -25,8 +25,10 @@ CREATE TABLE IF NOT EXISTS applications (
 );
 
 CREATE TABLE IF NOT EXISTS associations (
-    cluster VARCHAR(255) PRIMARY KEY,
-    application VARCHAR(255) PRIMARY KEY,
-    manifest TEXT
+    cluster VARCHAR(255),
+    application VARCHAR(255),
+    manifest TEXT,
+    PRIMARY KEY (cluster,application),
+    FOREIGN KEY (cluster) REFERENCES applications(nom)
 );
 "
