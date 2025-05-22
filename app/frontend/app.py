@@ -58,7 +58,6 @@ def edge():
     applis=cur.fetchall()
     cur.execute("SELECT cluster,application from associations;")
     assoc=cur.fetchall()
-    print(assoc)
     
     return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc)
 
@@ -246,6 +245,58 @@ def affectapp():
     data["cluster"] = request.form["cluster"]
     data["applis"]=request.form.getlist('applis')
     print(data)
+    if "cluster" in data.keys() and "applis" in data.keys() and "bouton" in data.keys():
+        cur.execute("SELECT * FROM applications")
+        selected_applis, applis, cluster, bouton=data["applis"], cur.fetchall(), data["cluster"], data["bouton"]
+
+        liste_invalides=[]
+        err=None
+
+        if bouton == "supprimer":
+            for appli in selected_applis:
+                cur.execute("SELECT cluster, application FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                if (cur.fetchone):
+                    if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]}).status_code==200:
+                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0]))
+                        cnx.commit()
+                else: liste_invalides.append(appli[0])
+            if len(liste_invalides)>0:
+                err=""+liste_invalides+" sont des applications déjà absentes du cluster"
+
+        elif bouton == "ajouter":
+            for appli in selected_applis:
+                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                if (not cur.fetchone()) :
+                    if requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]}).status_code==200:
+                        man = re.sub('"','\"',appli[1])
+                        cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli[0],man))
+                        cnx.commit()
+                else: liste_invalides.append(appli[0])
+            if len(liste_invalides)>0:
+                err=""+liste_invalides+" sont des applications déjà présentes dans le cluster"
+
+
+    cur.execute("SELECT * from edge;")
+    vms=cur.fetchall()
+    cur.execute("SELECT * from applications;")
+    applis=cur.fetchall()
+    cur.execute("SELECT cluster,application from associations;")
+    assoc=cur.fetchall()
+    
+    return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc, err=err)
+
+
+
+
+
+
+"""
+@app.route("/affectapp", methods=["POST"])
+def affectapp():
+    data={}
+    data["cluster"] = request.form["cluster"]
+    data["applis"]=request.form.getlist('applis')
+    print(data)
     if "cluster" in data.keys() and "applis" in data.keys():
         cur.execute("SELECT * FROM applications")
         selected_applis,applis=data["applis"],cur.fetchall()
@@ -267,7 +318,7 @@ def affectapp():
                         cnx.commit()
                 
     return render_template("index.j2")
-
+"""
 
 try:
     app.run(host="0.0.0.0", port=80)
