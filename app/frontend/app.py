@@ -268,7 +268,7 @@ def affectapp():
 
         elif bouton == "ajouter":
             for appli in selected_applis:
-                cur.execute("SELECT * FROM application WHERE nom = %s",(appli,))
+                cur.execute("SELECT * FROM applications WHERE nom = %s",(appli,))
                 manifest=cur.fetchone()[0]
                 cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli))
                 if (not cur.fetchone()) :
