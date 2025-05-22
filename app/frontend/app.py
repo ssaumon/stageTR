@@ -257,7 +257,7 @@ def affectapp():
         if bouton == "supprimer":
             for appli in selected_applis:
                 cur.execute("SELECT cluster, application FROM associations WHERE cluster = %s AND application = %s",(cluster,appli))
-                if (cur.fetchone):
+                if (cur.fetchone()):
                     if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli}).status_code==200:
                         cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli))
                         cnx.commit()
