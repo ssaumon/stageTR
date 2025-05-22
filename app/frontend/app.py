@@ -245,6 +245,7 @@ def affectapp():
     data={}
     data["cluster"] = request.form["cluster"]
     data["applis"]=request.form.getlist('applis')
+    data["bouton"] = request.form["bouton"]
     print(data)
     if "cluster" in data.keys() and "applis" in data.keys() and "bouton" in data.keys():
         cur.execute("SELECT * FROM applications")
