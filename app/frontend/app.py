@@ -261,6 +261,7 @@ def affectapp():
                         cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0]))
                         cnx.commit()
                 else: liste_invalides.append(appli[0])
+                print(liste_invalides)
             if len(liste_invalides)>0:
                 err=""+liste_invalides+" sont des applications déjà absentes du cluster"
 
@@ -273,6 +274,7 @@ def affectapp():
                         cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli[0],man))
                         cnx.commit()
                 else: liste_invalides.append(appli[0])
+            print(liste_invalides)
             if len(liste_invalides)>0:
                 err=""+liste_invalides+" sont des applications déjà présentes dans le cluster"
 
