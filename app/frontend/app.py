@@ -56,8 +56,11 @@ def edge():
     vms=cur.fetchall()
     cur.execute("SELECT * from applications;")
     applis=cur.fetchall()
+    cur.execute("SELECT cluster,application from associations;")
+    assoc=cur.fetchall()
+    print(assoc)
     
-    return render_template("edge.j2",vms=vms, applis=applis)
+    return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc)
 
 @app.route("/iot")
 def iot():
@@ -249,31 +252,23 @@ def affectapp():
         for appli in applis:
             cluster=data["cluster"]
             if appli[0] in selected_applis:
-                requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]})
+                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                if (not cur.fetchone()) :
+                    if requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]}).status_code==200:
+                        man = re.sub('"','\"',appli[1])
+                        cur.execute("INSERT INTO associations VALUES (%s, %s);", (cluster,appli[0],man))
+                        cnx.commit()
+                
             else:
-                requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]})
+                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
+                if (cur.fetchone()) :
+                    if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]}).status_code==200:
+                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0],man))
+                        cnx.commit()
+                
     return render_template("index.j2")
 
 
-"""
-@app.route("/affectapp", methods=["POST"])
-def affectapp():
-    data={}
-    data["cluster"] = request.form["cluster"]
-    data["applis"]=request.form.getlist('applis')
-    print(data)
-    if "cluster" in data.keys() and "applis" in data.keys():
-        cur.execute("SELECT * FROM applications")
-        cluster,applis=data["cluster"],cur.fetchall()
-        for appli in applis:
-            if appli[0] in data["applis"]:
-                subprocess.run(["touch", f"backend/shared/{cluster}/{appli[0]}"])
-                with open(f"backend/shared/{cluster}/{appli[0]}","w")as f:
-                    f.write(appli[1])
-            else:
-                subprocess.run(["rm", f"backend/shared/{cluster}/{appli[0]}"])
-    return render_template("index.j2")
-"""
 try:
     app.run(host="0.0.0.0", port=80)
 finally:

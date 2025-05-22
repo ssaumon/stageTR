@@ -118,7 +118,7 @@
                             {% for nomapp,man in applis %}
         
                             
-                              <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nom}}-{{nomapp}}">
+                              <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nom}}-{{nomapp}}" {% if (nom,nomapp) in assoc  %} checked {% endif %}>
                               <label class="btn list-group-item list-group-item-action " for="{{nom}}-{{nomapp}}">{{nomapp}}</label>
                                 
               
