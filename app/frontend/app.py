@@ -98,8 +98,8 @@ def create_edge():
         print(li)
         if nom in li:
             err="le nom "+nom+" est déjà utilisé"
-        elif re.search(r"\s",nom):
-            err="Il y a un espace dans : "+nom
+        elif re.search(r"[\s\(\)\-\&\@\*\$\|\%\~]",nom):
+            err="Il y a un espace ou un caractère spécial (( ) - & @ * $ | % ~) dans : "+nom
         elif int(ram)<2048:
             err="RAM insuffisante : "+ram+" < 2048"
         elif int(cpu)<2:
@@ -127,8 +127,8 @@ def create_iot():
         print(li)
         if nom in li:
             err="le nom "+nom+" est déjà utilisé"
-        elif re.search(r"\s",nom):
-            err="Il y a un espace dans : "+nom
+        elif re.search(r"[\s\(\)\-\&\@\*\$\|\%\~]",nom):
+            err="Il y a un espace ou un caractère spécial (( ) - & @ * $ | % ~) dans : "+nom
         elif int(ram)<512:
             err="RAM insuffisante : "+ram+" < 512"
         elif int(cpu)<1:
@@ -159,8 +159,8 @@ def create_app():
         li=[n[0] for n in cur.fetchall()]
         if nom in li:
             err="l'application "+nom+" existe déjà"
-        elif re.search(r"\s",nom):
-            err="Il y a un espace dans : "+nom
+        elif re.search(r"[\s\(\)\-\&\@\*\$\|\%\~]",nom):
+            err="Il y a un espace ou un caractère spécial (( ) - & @ * $ | % ~) dans : "+nom
         else:
             #r=requests.post(f"{backip}:5000/createapp",data=data)
             man = re.sub('"','\"',manifest)
