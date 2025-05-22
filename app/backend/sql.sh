@@ -23,4 +23,10 @@ CREATE TABLE IF NOT EXISTS applications (
     nom VARCHAR(255) PRIMARY KEY,
     manifest TEXT
 );
+
+CREATE TABLE IF NOT EXISTS associations (
+    cluster VARCHAR(255) PRIMARY KEY,
+    application VARCHAR(255) PRIMARY KEY,
+    manifest TEXT
+);
 "

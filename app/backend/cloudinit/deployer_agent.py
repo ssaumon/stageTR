@@ -21,6 +21,7 @@ def create():
             f.writelines(manifest)
         subprocess.run(["kubectl","apply","-f",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     return "valide", 200
+
 @app.route("/delete", methods=["POST"])
 def delete():
     data=request.form.to_dict()
@@ -28,6 +29,7 @@ def delete():
     nom = data["nom"]
     subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
     return "oui", 200
+
 @app.route("/update", methods=["POST"])
 def update():
     data=request.form.to_dict()
