@@ -59,7 +59,7 @@ def maj_prometheus():
         for row in prom:
             print(row)
             row = re.sub(r"{{liste}}",rf"{st}",row)
-        f.write(row)
+            f.write(row)
     subprocess.Popen(["systemctl", "restart", "prometheus"])
 
 
