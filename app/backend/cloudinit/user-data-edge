@@ -51,9 +51,8 @@ write_files:
     permissions: '0755'
     content: |
       apt update -y
-      echo '1'
+      apt install -y prometheus-node-exporter
       apt install -y python3-pip
-      echo '2'
       pip install flask
       pip install requests
       t=1
@@ -67,7 +66,6 @@ write_files:
       mkdir var/lib/rancher/k3s/server/manifests/shared
       systemctl enable deployer-agent.service
       systemctl start deployer-agent.service
-      echo 'fin'
 
     append: true
 
