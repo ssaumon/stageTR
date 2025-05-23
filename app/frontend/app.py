@@ -54,11 +54,12 @@ def maj_prometheus():
     prom=""
     with open("backend/prometheus/template_prom")as f:
         prom=f.readlines()
-    print(prom)
-    prom_liste = re.sub(r"{{liste}}",rf"{st}",prom)
 
     with open("/etc/prometheus/prometheus.yml","w")as f:
-        f.writelines(prom_liste)
+        for row in prom:
+            print(row)
+            row = re.sub(r"{{liste}}",rf"{st}",row)
+        f.write(row)
     subprocess.Popen(["systemctl restart prometheus"])
 
 
