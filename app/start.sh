@@ -26,6 +26,9 @@ apt install -y ansible
 echo installation de mysql
 apt install -y mysql-server
 
+echo installation de prometheus
+apt install -y prometheus
+
 echo installation de requirements.txt
 pip install --no-cache-dir -r frontend/requirements.txt
 

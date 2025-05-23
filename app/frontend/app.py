@@ -41,6 +41,28 @@ def majetatvm():
             cnx.commit()
 
 
+def maj_prometheus():
+    cur.execute("SELECT nom from edge;")
+    vms=cur.fetchall()
+    cur.execute("SELECT nom from iot;")
+    vms.extend(cur.fetchall())
+    vms = [n[0] for n in vms ]
+    st=""
+    for vm in vms:
+        st+=f"'{vm}:9100',"
+    st=st[:-1]
+    prom=""
+    with open("backend/prometheus/template_prom")as f:
+        prom=f.readlines()
+    prom = re.sub(r"{{liste}}",rf"{st}",prom)
+
+    with open("/etc/prometheus/prometheus.yml","w")as f:
+        f.writelines(prom)
+    subprocess.Popen(["systemctl restart prometheus"])
+
+
+
+
 @app.route("/")
 def index():
     return render_template("index.j2")
@@ -112,6 +134,7 @@ def create_edge():
             subprocess.Popen(["./backend/createedge.sh", nom, ram, cpu])
         cur.execute("SELECT * from edge;")
         vms=cur.fetchall()
+        maj_prometheus()
     return render_template("edge.j2",vms=vms, err=err)
 
 
@@ -147,6 +170,8 @@ def create_iot():
     vms=cur.fetchall()
     cur.execute("SELECT nom from edge;")
     clusters=[n[0] for n in cur.fetchall()]
+    maj_prometheus()
+    
     return render_template("iot.j2",vms=vms, clusters=clusters,err=err)
 
 
@@ -205,6 +230,8 @@ def deledge():
 
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
+    maj_prometheus()
+
     return render_template("edge.j2", vms=vms)
 
 
@@ -221,6 +248,8 @@ def deliot():
     vms=cur.fetchall()
     cur.execute("SELECT nom from edge;")
     clusters=[n[0] for n in cur.fetchall()]
+    maj_prometheus()
+
     return render_template("iot.j2", vms=vms, clusters=clusters)
 
 
