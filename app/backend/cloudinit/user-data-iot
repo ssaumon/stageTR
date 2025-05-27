@@ -15,7 +15,7 @@ chpasswd:
 
 runcmd:
   -  curl -sfL https://get.k3s.io | {{k3scmd}}
-  - sleep 5 
+  - sleep 7 
   - bash /home/ubuntu/start.sh
 
 write_files:
