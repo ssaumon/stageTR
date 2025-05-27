@@ -8,7 +8,7 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
 fi
 
 date=$(date)
-ssh=$(cat ~/.ssh/id_rsa.pub)
+ssh=$(cat backend/.ssh/id_rsa.pub)
 
 
 touch backend/cloudinit/user-data.d/$1
