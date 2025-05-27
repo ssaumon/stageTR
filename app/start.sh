@@ -58,6 +58,13 @@ else
     cp jammy-server-cloudimg-amd64.img /home/
 fi
 
+if [ -f "~/.ssh/id_rsa.pub" ]; then
+    echo clé déjà créée
+else
+    echo "création des clés SSH"
+    ssh-keygen -f ~/.ssh/id_rsa
+fi
+
 BACKIP=127.0.0.1
 export BACKIP=127.0.0.1
 

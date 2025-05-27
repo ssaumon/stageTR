@@ -6,8 +6,8 @@ users:
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDsw7jfa7NrKmlCOIlbZ+cdHMucr+qp4yFm+7hLYMj43j/bPaMxY3LVGrVIvUXtaUCMGOSmyGZVF5sBiDPhXQmNpKAjr+yCJjvUYWusj8T1dLBT30hvihUrA0hrSc/LHTRfiEGcRCjiLkA3MGeTeYDo5Eof6tFzF+I5/YFKZGOCeCRJ51LzNxeiQC7/SIHMnMraRtVZhq7P3FPQosAUekFY4QOreGmxpgmCjNdvqf2vAplVCQS+pS3+FjuDlXQ8fOECMwTycoLCVIsVQpTOtAWXAzRhuLM0TvVBiW/r+BeRj2juFPeEowSchSY+JAxZR/0mW8A5Lx8bvUbg28ZKUh58orNBot9TxBAhApIZPh1ml63fCBVdl1Sc4KqdRREA8POj//KynDO6xFbHlPFUuUGIO6Lg7+hVtyGyTwU4dwK6sjXkezv6jV3Ou80zcBE6v345rLU4pYmAxTtx2IDGWY97/yfZwTA/hSFdHIbd1zp3DV7vagRjlgCG/ERRNjhYtMM= ubuntu@livm0001002rsxx
-
+      - {{ssh}}
+      
 chpasswd:
   list: |
     ubuntu:bonjour

@@ -8,10 +8,11 @@ if [ ! -d "backend/cloudinit/user-data.d" ]; then
 fi
 
 ipedge=$(./backend/ipvm.sh $4)
+ssh=$(cat ~/.ssh/id_rsa.pub)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="K3S_URL=https://$ipedge:6443 K3S_TOKEN=$4 sh - "
-cat --show-tabs backend/cloudinit/user-data-iot | sed "s/{{hostname}}/$1/g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/user-data-iot | sed "s/{{hostname}}/$1/g" | sed "s/{{ssh}}/$ssh/g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
