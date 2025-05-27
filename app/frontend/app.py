@@ -68,7 +68,7 @@ def del_prometheus_instance(instance):
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
     time.sleep(5)
     print(instance)
-    subprocess.run(["curl", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance='+instance+':9100"}'])
+    subprocess.run(["curl", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="'+instance+':9100"}'])
     print(instance)
     subprocess.run(["curl", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/clean_tombstones"])
     print(instance)
