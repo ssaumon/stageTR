@@ -4,6 +4,7 @@ import subprocess
 import requests
 import mysql.connector
 import re
+import time
 
 cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD_VMs",password="bonjour")
 
@@ -65,6 +66,7 @@ def maj_prometheus():
 def del_prometheus_instance(instance):
     subprocess.run(["systemctl", "stop", "prometheus"])
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
+    time.sleep(5)
     print(instance)
     subprocess.run(["curl", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance='"+instance+":9100'}"])
     print(instance)
