@@ -62,6 +62,13 @@ def maj_prometheus():
             f.write(row)
     subprocess.Popen(["systemctl", "restart", "prometheus"])
 
+def del_prometheus_instance(instance):
+    subprocess.run(["systemctl", "stop", "prometheus"])
+    enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
+    subprocess.run(["curl", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance='"+instance+":9100'}"])
+    enable.kill()
+    subprocess.run(["systemctl", "start", "prometheus"])
+
 
 
 
@@ -222,6 +229,7 @@ def deledge():
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
         subprocess.run(["./backend/deleteVM.sh", nom])
+        del_prometheus_instance(nom)
 
         cur.execute("SELECT nom FROM iot WHERE cluster = %s", (nom,))
         iter = [n[0] for n in cur.fetchall()]
@@ -229,6 +237,7 @@ def deledge():
             subprocess.run(["./backend/deleteVM.sh", iot])
             cur.execute("DELETE FROM iot WHERE nom = %s;", (iot,))
             cnx.commit()
+            del_prometheus_instance(iot)
 
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
