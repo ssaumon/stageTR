@@ -66,6 +66,7 @@ def del_prometheus_instance(instance):
     subprocess.run(["systemctl", "stop", "prometheus"])
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
     subprocess.run(["curl", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance='"+instance+":9100'}"])
+    subprocess.run(["curl", "-X", "POST","http://localhost:9090/api/v1/admin/tsdb/clean_tombstones"])
     enable.kill()
     subprocess.run(["systemctl", "start", "prometheus"])
 
