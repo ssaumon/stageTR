@@ -13,7 +13,7 @@ ssh=$(cat backend/.ssh/id_rsa.pub)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="sh -s - --token $1"
-cat --show-tabs backend/cloudinit/user-data-edge | sed "s/{{hostname}}/$1/g" | sed "s/{{ssh}}/$ssh/g" | sed "s|{{k3scmd}}|$cmd|g" | sed "s|{{date}}|$date|g"> backend/cloudinit/user-data.d/$1
+cat --show-tabs backend/cloudinit/user-data-edge | sed "s/{{hostname}}/$1/g" | sed "s|{{ssh}}|$ssh|g" | sed "s|{{k3scmd}}|$cmd|g" | sed "s|{{date}}|$date|g"> backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
