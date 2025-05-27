@@ -234,16 +234,18 @@ def deledge():
         nom=data["nom"]
         cur.execute("DELETE FROM edge WHERE nom = %s;", (nom,))
         cnx.commit()
-        subprocess.run(["./backend/deleteVM.sh", nom])
         del_prometheus_instance(nom)
+        subprocess.run(["./backend/deleteVM.sh", nom])
+
 
         cur.execute("SELECT nom FROM iot WHERE cluster = %s", (nom,))
         iter = [n[0] for n in cur.fetchall()]
         for iot in iter:
+            del_prometheus_instance(iot)
             subprocess.run(["./backend/deleteVM.sh", iot])
             cur.execute("DELETE FROM iot WHERE nom = %s;", (iot,))
             cnx.commit()
-            del_prometheus_instance(iot)
+            
 
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
