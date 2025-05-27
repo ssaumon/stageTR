@@ -58,7 +58,6 @@ def maj_prometheus():
 
     with open("/etc/prometheus/prometheus.yml","w")as f:
         for row in prom:
-            print(row)
             row = re.sub(r"{{liste}}",rf"{st}",row)
             f.write(row)
     subprocess.Popen(["systemctl", "restart", "prometheus"])
@@ -66,7 +65,7 @@ def maj_prometheus():
 def del_prometheus_instance(instance):
     subprocess.run(["systemctl", "stop", "prometheus"])
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
-    time.sleep(5)
+    time.sleep(1)
     print(instance)
     subprocess.run(["curl", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="'+instance+':9100"}'])
     print(instance)
