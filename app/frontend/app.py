@@ -262,6 +262,7 @@ def deliot():
         nom=data["nom"]
         cur.execute("DELETE FROM iot WHERE nom = %s;", (nom,))
         cnx.commit()
+        del_prometheus_instance(nom)
         subprocess.Popen(["./backend/deleteVM.sh", nom])
     cur.execute("SELECT * from iot;")
     vms=cur.fetchall()
