@@ -70,7 +70,7 @@ if [ -f "frontend/Chart.js" ]; then
     echo Chart.js déjà installé
 else
     echo "installation de Chart.js"
-    mkdir touch frontend/Chart.js
+    touch frontend/Chart.js
     curl https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js > frontend/Chart.js
 fi
 
