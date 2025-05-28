@@ -202,7 +202,7 @@
         // Fonction pour récupérer les données depuis Prometheus
         async function fetchData() {
             const prometheusUrl = 'http://192.168.98.90:9090';
-            const vmName = "{{vm}}";
+            const vmName = "{{vm}}:9100";
             const timeRange = document.getElementById('timeRange').value;
 
 
