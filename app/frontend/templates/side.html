@@ -220,8 +220,8 @@
                 ]);
 
 
-                updateChart(totalData, availableData);
-                showStatus(`Données mises à jour avec succès (${totalData.values.length} points)`, 'success');
+                updateChart(totalData[0], availableData[0]);
+                showStatus(`Données mises à jour avec succès (${totalData[0].values.length} points)`, 'success');
 
             } catch (error) {
                 console.error('Erreur:', error);
@@ -299,7 +299,7 @@
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             initChart();
-            fetchData();
+            fetchData()
         });
     </script>
 </body>
