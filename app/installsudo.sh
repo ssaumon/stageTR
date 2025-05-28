@@ -66,6 +66,14 @@ else
     ssh-keygen -f backend/.ssh/id_rsa
 fi
 
+if [ -f "frontend/Chart.js" ]; then
+    echo Chart.js déjà installé
+else
+    echo "installation de Chart.js"
+    mkdir touch frontend/Chart.js
+    curl https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js > frontend/Chart.js
+fi
+
 BACKIP=127.0.0.1
 export BACKIP=127.0.0.1
 
