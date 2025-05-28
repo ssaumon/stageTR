@@ -350,6 +350,10 @@ def affectapp():
 def test():
     return render_template("side.html")
 
+@app.route("/Chart.js", methods=["GET"])
+def chart():
+    return render_template("../Chart.js")
+
 
 
 
