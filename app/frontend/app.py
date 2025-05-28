@@ -346,7 +346,7 @@ def affectapp():
     return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc, err=err)
 
 
-@app.route("/test", methods=["POST"])
+@app.route("/test", methods=["GET"])
 def test():
     return render_template("side.html")
 
