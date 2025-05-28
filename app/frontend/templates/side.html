@@ -83,15 +83,6 @@
         </div>
 
         <div class="config-panel">
-            <h3>Configuration</h3>
-            <div class="config-row">
-                <label>URL Prometheus:</label>
-                <input type="hidden" id="prometheusUrl" value="http://192.168.98.90:9090">
-            </div>
-            <div class="config-row">
-                <label>Nom de la VM:</label>
-                <input type="text" id="vmName" value=">{{vm}}">
-            </div>
             <div class="config-row">
                 <label>Période:</label>
                 <select id="timeRange">
@@ -104,7 +95,6 @@
             </div>
             <div class="config-row">
                 <button onclick="fetchData()">🔄 Actualiser</button>
-                <button onclick="toggleAutoRefresh()">⏱️ Auto-refresh (OFF)</button>
             </div>
         </div>
 
@@ -234,10 +224,6 @@
                     queryPrometheusRange(prometheusUrl, queries.available, start, now, step)
                 ]);
 
-                if (!totalData.length || !availableData.length) {
-                    showStatus('Aucune donnée trouvée pour cette VM. Vérifiez le nom de la VM.', 'error');
-                    return;
-                }
 
                 updateChart(totalData[0], availableData[0]);
                 showStatus(`Données mises à jour avec succès (${totalData[0].values.length} points)`, 'success');
@@ -320,20 +306,6 @@
                 setTimeout(() => {
                     status.style.display = 'none';
                 }, 3000);
-            }
-        }
-
-        function toggleAutoRefresh() {
-            const button = event.target;
-            if (isAutoRefresh) {
-                clearInterval(autoRefreshInterval);
-                button.textContent = '⏱️ Auto-refresh (OFF)';
-                isAutoRefresh = false;
-            } else {
-                autoRefreshInterval = setInterval(fetchData, 30000); // 30 secondes
-                button.textContent = '⏱️ Auto-refresh (ON)';
-                isAutoRefresh = true;
-                fetchData(); // Première récupération immédiate
             }
         }
 

@@ -346,9 +346,9 @@ def affectapp():
     return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc, err=err)
 
 
-@app.route("/test", methods=["GET"])
-def test():
-    return render_template("side.html")
+@app.route("/test/<vm>", methods=["GET"])
+def test(vm):
+    return render_template("side.html", vm=vm)
 
 @app.route("/Chart.js", methods=["GET"])
 def chart():
