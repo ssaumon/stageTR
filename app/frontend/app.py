@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from pathlib import Path
 import subprocess
 import requests
@@ -352,7 +352,7 @@ def test():
 
 @app.route("/Chart.js", methods=["GET"])
 def chart():
-    return render_template("../Chart.js")
+    return send_file("static/Chart.js")
 
 
 
