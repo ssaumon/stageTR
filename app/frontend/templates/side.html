@@ -214,14 +214,9 @@
                 const step = Math.max(Math.floor((now - start) / 100), 15); // Max 100 points
 
                 // Requêtes Prometheus pour la mémoire
-                const queries = {
-                    total: `node_memory_MemTotal_bytes{instance=~".*${vmName}.*"}`,
-                    available: `node_memory_MemAvailable_bytes{instance=~".*${vmName}.*"}`
-                };
-
                 const [totalData, availableData] = await Promise.all([
-                    queryPrometheusRange(prometheusUrl, queries.total, start, now, step),
-                    queryPrometheusRange(prometheusUrl, queries.available, start, now, step)
+                    queryPrometheusRange(prometheusUrl, `node_memory_MemTotal_bytes{instance="${vmName}"}`, start, now, step),
+                    queryPrometheusRange(prometheusUrl, `node_memory_MemAvailable_bytes{instance="${vmName}"}`, start, now, step)
                 ]);
 
 
@@ -238,16 +233,8 @@
         async function queryPrometheusRange(baseUrl, query, start, end, step) {
             const url = `${baseUrl}/api/v1/query_range?query=${encodeURIComponent(query)}&start=${start}&end=${end}&step=${step}`;
             
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            
+            const response = await fetch(url);            
             const data = await response.json();
-            if (data.status !== 'success') {
-                throw new Error(`Erreur Prometheus: ${data.error || 'Erreur inconnue'}`);
-            }
-            
             return data.data.result;
         }
 
@@ -312,6 +299,7 @@
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             initChart();
+            fetchData();
         });
     </script>
 </body>
