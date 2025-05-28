@@ -298,7 +298,7 @@
             chart.data.labels = labels;
             chart.data.datasets[0].data = ramUsagePercent;
             chart.data.datasets[1].data = ramUsageGB;
-            chart.data.datasets[1].max = ramUsageGBmax;
+            chart.options.scales.y1.max = ramUsageGBmax;
             chart.update();
         }
 
