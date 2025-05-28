@@ -86,11 +86,11 @@
             <h3>Configuration</h3>
             <div class="config-row">
                 <label>URL Prometheus:</label>
-                <input type="text" id="prometheusUrl" value="http://localhost:9090" placeholder="http://prometheus:9090">
+                <input type="hidden" id="prometheusUrl" value="http://192.168.98.90:9090">
             </div>
             <div class="config-row">
                 <label>Nom de la VM:</label>
-                <input type="text" id="vmName" value="" placeholder="vm-web-01">
+                <input type="text" id="vmName" value=">{{vm}}">
             </div>
             <div class="config-row">
                 <label>Période:</label>
@@ -197,9 +197,7 @@
                             display: true,
                             text: 'RAM Utilisée (GB)'
                         },
-                        grid: {
-                            drawOnChartArea: false,
-                        },
+                        min: 0
                     }
                 }
             }
@@ -213,14 +211,10 @@
 
         // Fonction pour récupérer les données depuis Prometheus
         async function fetchData() {
-            const prometheusUrl = document.getElementById('prometheusUrl').value;
-            const vmName = document.getElementById('vmName').value;
+            const prometheusUrl = 'http://192.168.98.90:9090';
+            const vmName = "{{vm}}";
             const timeRange = document.getElementById('timeRange').value;
 
-            if (!vmName) {
-                showStatus('Veuillez spécifier le nom de la VM', 'error');
-                return;
-            }
 
             showStatus('Récupération des données...', 'success');
 
@@ -276,6 +270,7 @@
             const labels = [];
             const ramUsagePercent = [];
             const ramUsageGB = [];
+            const ramUsageGBmax = 0;
 
             // Traitement des données
             totalSeries.values.forEach((totalPoint, index) => {
@@ -289,6 +284,7 @@
                     const usedBytes = totalBytes - availableBytes;
                     const usagePercent = (usedBytes / totalBytes) * 100;
                     const usageGB = usedBytes / (1024 * 1024 * 1024);
+                    ramUsageGBmax = totalBytes;
 
                     labels.push(new Date(timestamp * 1000).toLocaleTimeString());
                     ramUsagePercent.push(usagePercent.toFixed(2));
@@ -300,6 +296,7 @@
             chart.data.labels = labels;
             chart.data.datasets[0].data = ramUsagePercent;
             chart.data.datasets[1].data = ramUsageGB;
+            chart.data.datasets[1].max = ramUsageGBmax;
             chart.update();
         }
 
