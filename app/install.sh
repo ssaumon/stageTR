@@ -6,4 +6,4 @@ else
     ssh-keygen -f backend/.ssh/id_rsa
 fi
 
-sudo ./installsudo.sh
+sudo ./rootinstall.sh

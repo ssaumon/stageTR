@@ -346,39 +346,12 @@ def affectapp():
     return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc, err=err)
 
 
+@app.route("/test", methods=["POST"])
+def test():
+    return render_template("side.html")
 
 
 
-
-"""
-@app.route("/affectapp", methods=["POST"])
-def affectapp():
-    data={}
-    data["cluster"] = request.form["cluster"]
-    data["applis"]=request.form.getlist('applis')
-    print(data)
-    if "cluster" in data.keys() and "applis" in data.keys():
-        cur.execute("SELECT * FROM applications")
-        selected_applis,applis=data["applis"],cur.fetchall()
-        for appli in applis:
-            cluster=data["cluster"]
-            if appli[0] in selected_applis:
-                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
-                if (not cur.fetchone()) :
-                    if requests.post(f"http://{cluster}:5001/create",data={"nom":appli[0],"manifest":appli[1]}).status_code==200:
-                        man = re.sub('"','\"',appli[1])
-                        cur.execute("INSERT INTO associations VALUES (%s, %s, %s);", (cluster,appli[0],man))
-                        cnx.commit()
-                
-            else:
-                cur.execute("SELECT * FROM associations WHERE cluster = %s AND application = %s",(cluster,appli[0]))
-                if (cur.fetchone()) :
-                    if requests.post(f"http://{cluster}:5001/delete",data={"nom":appli[0]}).status_code==200:
-                        cur.execute("DELETE FROM associations WHERE cluster = %s AND application = %s;", (cluster,appli[0]))
-                        cnx.commit()
-                
-    return render_template("index.j2")
-"""
 
 try:
     app.run(host="0.0.0.0", port=80)
