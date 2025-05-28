@@ -284,7 +284,9 @@
                     const usedBytes = totalBytes - availableBytes;
                     const usagePercent = (usedBytes / totalBytes) * 100;
                     const usageGB = usedBytes / (1024 * 1024 * 1024);
+                    console.log(totalBytes)
                     ramUsageGBmax = totalBytes / (1024 * 1024 * 1024);
+                    console.log(ramUsageGBmax)
 
                     labels.push(new Date(timestamp * 1000).toLocaleTimeString());
                     ramUsagePercent.push(usagePercent.toFixed(2));
