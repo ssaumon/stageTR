@@ -104,23 +104,20 @@
             <canvas id="ramChart"></canvas>
         </div>
 
-        <div class="metrics-info">
-            <p><strong>Métriques utilisées:</strong></p>
-            <ul>
-                <li><code>node_memory_MemTotal_bytes</code> - Mémoire totale</li>
-                <li><code>node_memory_MemAvailable_bytes</code> - Mémoire disponible</li>
-                <li><strong>Utilisation = ((Total - Disponible) / Total) × 100</strong></li>
-            </ul>
-        </div>
+        <div class="chart-container">
+          <canvas id="cpuChart"></canvas>
+      </div>
+
     </div>
 
     <script>
-        let chart;
+        let RamChart;
+        let CpuChart;
         let autoRefreshInterval;
         let isAutoRefresh = false;
 
         // Configuration du graphique
-        const chartConfig = {
+        const chartConfigRam = {
             type: 'line',
             data: {
                 labels: [],
@@ -193,10 +190,66 @@
             }
         };
 
+        const chartConfigCpu = {
+          type: 'line',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: 'Utilisation CPU (%)',
+                  data: [],
+                  borderColor: '#dc3545',
+                  backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                  borderWidth: 2,
+                  fill: true,
+                  tension: 0.4
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                  mode: 'index',
+                  intersect: false,
+              },
+              plugins: {
+                  title: {
+                      display: true,
+                      text: 'Utilisation du CPU en temps réel'
+                  },
+                  legend: {
+                      display: true,
+                      position: 'top'
+                  }
+              },
+              scales: {
+                  x: {
+                      display: true,
+                      title: {
+                          display: true,
+                          text: 'Temps'
+                      }
+                  },
+                  y: {
+                      type: 'linear',
+                      display: true,
+                      position: 'left',
+                      title: {
+                          display: true,
+                          text: 'Utilisation (%)'
+                      },
+                      min: 0,
+                      max: 100
+                  }
+              }
+          }
+      };
+
         // Initialisation du graphique
         function initChart() {
-            const ctx = document.getElementById('ramChart').getContext('2d');
-            chart = new Chart(ctx, chartConfig);
+            const ctxram = document.getElementById('ramChart').getContext('2d');
+            RamChart = new Chart(ctxram, chartConfigRam);
+            const ctxcpu = document.getElementById('cpuChart').getContext('2d');
+            RamChart = new Chart(ctxcpu, chartConfigRam);
         }
 
         // Fonction pour récupérer les données depuis Prometheus
@@ -214,13 +267,14 @@
                 const step = Math.max(Math.floor((now - start) / 100), 15); // Max 100 points
 
                 // Requêtes Prometheus pour la mémoire
-                const [totalData, availableData] = await Promise.all([
+                const [totalData, availableData, cpuData] = await Promise.all([
                     queryPrometheusRange(prometheusUrl, `node_memory_MemTotal_bytes{instance="${vmName}"}`, start, now, step),
-                    queryPrometheusRange(prometheusUrl, `node_memory_MemAvailable_bytes{instance="${vmName}"}`, start, now, step)
+                    queryPrometheusRange(prometheusUrl, `node_memory_MemAvailable_bytes{instance="${vmName}"}`, start, now, step),
+                    queryPrometheusRange(prometheusUrl, `100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle",instance="${vmName}"}[5m])) * 100)`, start, now, step),
                 ]);
 
 
-                updateChart(totalData[0], availableData[0]);
+                updateChart(totalData[0], availableData[0], cpuData[0]);
                 showStatus(`Données mises à jour avec succès (${totalData[0].values.length} points)`, 'success');
 
             } catch (error) {
@@ -239,11 +293,14 @@
         }
 
         // Mise à jour du graphique
-        function updateChart(totalSeries, availableSeries) {
+        function updateChart(totalSeries, availableSeries, cpuSeries) {
             const labels = [];
             const ramUsagePercent = [];
             const ramUsageGB = [];
+            const cpuUsagePercent = [];
             let ramUsageGBmax = 0;
+
+            console.log(cpuSeries)
 
             // Traitement des données
             totalSeries.values.forEach((totalPoint, index) => {
@@ -265,14 +322,15 @@
                     ramUsagePercent.push(usagePercent.toFixed(2));
                     ramUsageGB.push(usageGB.toFixed(2));
                 }
+
             });
 
             // Mise à jour des données du graphique
-            chart.data.labels = labels;
-            chart.data.datasets[0].data = ramUsagePercent;
-            chart.data.datasets[1].data = ramUsageGB;
-            chart.options.scales.y1.max = ramUsageGBmax;
-            chart.update();
+            RamChart.data.labels = labels;
+            RamChart.data.datasets[0].data = ramUsagePercent;
+            RamChart.data.datasets[1].data = ramUsageGB;
+            RamChart.options.scales.y1.max = ramUsageGBmax;
+            RamChart.update();
         }
 
         // Utilitaires
