@@ -10,8 +10,9 @@ cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD
 
 cur=cnx.cursor()
 app = Flask(__name__)
-
-backip=subprocess.run(["echo", "$BACKIP"]).stdout
+backip=""
+ips = subprocess.run(["ifconfig"],stdout=subprocess.PIPE,text=True)
+backip = ips.stdout[1].split(" ")[2]
 
 def majetatvm():
     global cur
@@ -81,6 +82,7 @@ def del_prometheus_instance(instances):
 
 @app.route("/")
 def index():
+    print(request.host)
     return render_template("index.j2")
 
 @app.route("/edge")
@@ -151,7 +153,11 @@ def create_edge():
         cur.execute("SELECT * from edge;")
         vms=cur.fetchall()
         maj_prometheus()
-    return render_template("edge.j2",vms=vms, err=err)
+    cur.execute("SELECT * from applications;")
+    applis=cur.fetchall()
+    cur.execute("SELECT cluster,application from associations;")
+    assoc=cur.fetchall()
+    return render_template("edge.j2",vms=vms, err=err, applis=applis, assoc=assoc)
 
 
 
@@ -251,8 +257,12 @@ def deledge():
     cur.execute("SELECT * from edge;")
     vms=cur.fetchall()
     maj_prometheus()
+    cur.execute("SELECT * from applications;")
+    applis=cur.fetchall()
+    cur.execute("SELECT cluster,application from associations;")
+    assoc=cur.fetchall()
 
-    return render_template("edge.j2", vms=vms)
+    return render_template("edge.j2", vms=vms, assoc=assoc, applis=applis)
 
 
 
