@@ -102,7 +102,7 @@
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
-                          <textarea class="form-control" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
+                          <textarea class="form-control language-yaml" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
 
                           <pre><code class="language-yaml"id="man" placeholder="Manifest" name="manifest">{{manifest}}</code></pre>
                         </div>
@@ -144,5 +144,6 @@
         </div>
       </div>
     </div>
+    <script>hljs.highlightAll();</script>
   </body>
 </html>
