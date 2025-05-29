@@ -60,15 +60,15 @@
                 </div>
             </div>
 
-            <div id="status" class="d-none"></div>
+            <div id="status" class="alert d-none" role="alert"></div>
 
             <div class="container">
 
-                <div class="chart-container">
+                <div class="img">
                     <canvas id="ramChart"></canvas>
                 </div>
         
-                <div class="chart-container">
+                <div class="img">
                     <canvas id="cpuChart"></canvas>
               </div>
 
@@ -330,13 +330,13 @@
                 const status = document.getElementById('status');
                 status.classList.replace("d-none","d-block");
                 status.textContent = message;
-                status.classList.add(["bg-danger"])
+                status.classList.add(["alert-danger"])
                 
                 if (type === 'success') {
-                    status.classList.replace("bg-danger","bg-success")
+                    status.classList.replace("alert-danger","alert-success")
                     setTimeout(() => {
                         status.classList.replace("d-block","d-none");
-                        status.classList.remove("bg-success");
+                        status.classList.remove("alert-success");
                     }, 3000);
                 }
             }
