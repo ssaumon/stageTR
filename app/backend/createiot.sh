@@ -39,9 +39,9 @@ test=1
 while [ $test -eq 1 ];
 do
     rep=$(curl --silent $1:9100/metrics)
-    rep=${rep:0:1}
+    rep=${rep:1:2}
     echo $rep
-    if [ "$rep" = "#"  ]; then
+    if [ "$rep" = "H"  ]; then
         test=0
     fi
 done
