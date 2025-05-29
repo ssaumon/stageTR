@@ -82,7 +82,7 @@ def del_prometheus_instance(instances):
 def index():
     global backip
     backip =request.host
-    return render_template("index.j2")
+    return render_template("index.j2", backip=backip)
 
 @app.route("/edge")
 def edge():
@@ -127,7 +127,7 @@ def apps():
     cur=cnx.cursor()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
-    return render_template("app.j2", apps=apps)
+    return render_template("app.j2", apps=apps, backip=backip)
 
 
 
@@ -228,7 +228,7 @@ def create_app():
             cnx.commit()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
-    return render_template("app.j2", apps=apps, err=err)
+    return render_template("app.j2", apps=apps, err=err, backip=backip)
 
 
 
@@ -243,7 +243,7 @@ def delapp():
         cnx.commit()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
-    return render_template("app.j2", apps=apps)
+    return render_template("app.j2", apps=apps, backip=backip)
 
 
 
@@ -318,7 +318,7 @@ def modifapp():
         cnx.commit()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
-    return render_template("app.j2", apps=apps)
+    return render_template("app.j2", apps=apps, backip=backip)
 
 
 @app.route("/affectapp", methods=["POST"])
