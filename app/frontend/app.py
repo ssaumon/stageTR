@@ -11,8 +11,6 @@ cnx=mysql.connector.connect(host='127.0.0.1',user="root",port=3306,database="BDD
 cur=cnx.cursor()
 app = Flask(__name__)
 backip=""
-ips = subprocess.run(["ifconfig"],stdout=subprocess.PIPE,text=True)
-backip = ips.stdout.split("\n")[1].split(" ")[2]
 
 def majetatvm():
     global cur
@@ -82,13 +80,16 @@ def del_prometheus_instance(instances):
 
 @app.route("/")
 def index():
-    print(request.host)
+    global backip
+    backip =request.host
     return render_template("index.j2")
 
 @app.route("/edge")
 def edge():
     majetatvm()
     global cur
+    global backip
+    backip =request.host
     cur.close()
     cnx.cmd_reset_connection()
     cur=cnx.cursor()
@@ -99,10 +100,12 @@ def edge():
     cur.execute("SELECT cluster,application from associations;")
     assoc=cur.fetchall()
     
-    return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc)
+    return render_template("edge.j2",vms=vms, backip=backip, applis=applis, assoc=assoc)
 
 @app.route("/iot")
 def iot():
+    global backip
+    backip =request.host
     majetatvm()
     global cur
     cur.close()
@@ -112,10 +115,12 @@ def iot():
     vms=cur.fetchall()
     cur.execute("SELECT nom from edge;")
     clusters=[n[0] for n in cur.fetchall()]
-    return render_template("iot.j2",vms=vms, clusters=clusters)
+    return render_template("iot.j2",vms=vms, backip=backip, clusters=clusters)
 
 @app.route("/app")
 def apps():
+    global backip
+    backip =request.host
     global cur
     cur.close()
     cnx.cmd_reset_connection()
@@ -128,6 +133,8 @@ def apps():
 
 @app.route("/createedge", methods=["POST"])
 def create_edge():
+    global backip
+    backip =request.host
     err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys():
@@ -157,12 +164,14 @@ def create_edge():
     applis=cur.fetchall()
     cur.execute("SELECT cluster,application from associations;")
     assoc=cur.fetchall()
-    return render_template("edge.j2",vms=vms, err=err, applis=applis, assoc=assoc)
+    return render_template("edge.j2",vms=vms, backip=backip, err=err, applis=applis, assoc=assoc)
 
 
 
 @app.route("/createiot", methods=["POST"])
 def create_iot():
+    global backip
+    backip =request.host
     err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys() and "cluster" in data.keys():
@@ -194,12 +203,14 @@ def create_iot():
     clusters=[n[0] for n in cur.fetchall()]
     maj_prometheus()
     
-    return render_template("iot.j2",vms=vms, clusters=clusters,err=err)
+    return render_template("iot.j2",vms=vms, backip=backip, clusters=clusters,err=err)
 
 
 
 @app.route("/createapp", methods=["POST"])
 def create_app():
+    global backip
+    backip =request.host
     err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "manifest" in data.keys():
@@ -223,6 +234,8 @@ def create_app():
 
 @app.route("/delapp", methods=["POST"])
 def delapp():
+    global backip
+    backip =request.host
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
@@ -236,6 +249,8 @@ def delapp():
 
 @app.route("/deledge", methods=["POST"])
 def deledge():
+    global backip
+    backip =request.host
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
@@ -262,12 +277,14 @@ def deledge():
     cur.execute("SELECT cluster,application from associations;")
     assoc=cur.fetchall()
 
-    return render_template("edge.j2", vms=vms, assoc=assoc, applis=applis)
+    return render_template("edge.j2", vms=vms, backip=backip, assoc=assoc, applis=applis)
 
 
 
 @app.route("/deliot", methods=["POST"])
 def deliot():
+    global backip
+    backip =request.host
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
@@ -284,12 +301,14 @@ def deliot():
     clusters=[n[0] for n in cur.fetchall()]
     maj_prometheus()
 
-    return render_template("iot.j2", vms=vms, clusters=clusters)
+    return render_template("iot.j2", vms=vms, backip=backip, clusters=clusters)
 
 
 
 @app.route("/modifapp", methods=["POST"])
 def modifapp():
+    global backip
+    backip =request.host
     data = request.form.to_dict()
     print(data)
     if "nom" in data.keys() and "manifest" in data.keys():
@@ -304,6 +323,8 @@ def modifapp():
 
 @app.route("/affectapp", methods=["POST"])
 def affectapp():
+    global backip
+    backip =request.host
     err=None
     data={}
     data["cluster"] = request.form["cluster"]
@@ -358,12 +379,14 @@ def affectapp():
     cur.execute("SELECT cluster,application from associations;")
     assoc=cur.fetchall()
     
-    return render_template("edge.j2",vms=vms, applis=applis, assoc=assoc, err=err)
+    return render_template("edge.j2",vms=vms, backip=backip, applis=applis, assoc=assoc, err=err)
 
 
 @app.route("/details/<vm>", methods=["GET"])
-def test(vm):
-    return render_template("details.j2", vm=vm)
+def details(vm):
+    global backip
+    backip =request.host
+    return render_template("details.j2", vm=vm, backip= backip)
 
 @app.route("/Chart.js", methods=["GET"])
 def chart():

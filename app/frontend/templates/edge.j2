@@ -12,7 +12,7 @@
     <div class="d-flex">
       <div class="bg-dark text-white" id="sidebar" style="width: 250px; height: 100vh; padding: 10px; border-right: 1px solid #444;">
         <h3 class="text-center">Menu</h3>
-        <a href="http://192.168.98.90:80/" class="btn btn-dark w-100 text-start mb-2 mt-3 ">Monitoring</a>
+        <a href="http://{{backip}}:80/" class="btn btn-dark w-100 text-start mb-2 mt-3 ">Monitoring</a>
             
         <div class="accordion mb-2" id="accordionExample">
           <div class="accordion-item bg-dark border-0">
@@ -24,15 +24,15 @@
             <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
               <div class="accordion-body bg-dark">
                             
-                <a href="http://192.168.98.90:80/edge" class="nav-link btn btn-dark text-white active">Edge</a>
+                <a href="http://{{backip}}:80/edge" class="nav-link btn btn-dark text-white active">Edge</a>
                             
-                <a href="http://192.168.98.90:80/iot" class="nav-link btn btn-dark text-white">IoT</a>
+                <a href="http://{{backip}}:80/iot" class="nav-link btn btn-dark text-white">IoT</a>
               </div>
             </div>
           </div>
         </div>
             
-        <a href="http://192.168.98.90:80/app" class="btn btn-dark w-100 text-start mb-2">Créer une application</a>    
+        <a href="http://{{backip}}:80/app" class="btn btn-dark w-100 text-start mb-2">Créer une application</a>    
               
       </div>
       <div class="container-fluid">
@@ -77,7 +77,7 @@
                     Applications
                   </button>
 
-                  <a class="btn btn-primary" href="http://192.168.98.90:80/details/{{nom}}" role="button">Details</a>
+                  <a class="btn btn-primary" href="http://{{backip}}:80/details/{{nom}}" role="button">Details</a>
                 </td>
               </tr>
               
@@ -89,7 +89,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://192.168.98.90:80/deledge" method="post">
+                      <form class="form" action="http://{{backip}}:80/deledge" method="post">
                         <input type="hidden" name="nom" value="{{nom}}">
     
                         <button type="submit" class="btn btn-dark">Supprimer</button>
@@ -108,7 +108,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://192.168.98.90:80/affectapp" method="post">
+                      <form class="form" action="http://{{backip}}:80/affectapp" method="post">
                         
                         <div class="mb-3">
                           
@@ -155,7 +155,7 @@
             </div>
             <div class="modal-body justify-content-center">
                 
-              <form class="form" action="http://192.168.98.90:80/createedge" method="post">
+              <form class="form" action="http://{{backip}}:80/createedge" method="post">
                 <div class="mb-3 mt-3">
                   <label for="nom" class="form-label">Nom :</label>
                   <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
