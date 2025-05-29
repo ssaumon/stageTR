@@ -397,6 +397,10 @@ def details(vm):
 def chart():
     return send_file("static/Chart.js")
 
+@app.route("/hl.js", methods=["GET"])
+def chart():
+    return send_file("static/hl.js")
+
 
 
 
