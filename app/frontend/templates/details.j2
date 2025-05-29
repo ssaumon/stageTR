@@ -60,6 +60,8 @@
                 </div>
             </div>
 
+            <div id="status" class="d-none"></div>
+
             <div class="container">
 
                 <div class="chart-container">
@@ -326,13 +328,15 @@
     
             function showStatus(message, type) {
                 const status = document.getElementById('status');
-                status.className = `status ${type}`;
+                status.classList.replace("d-none","d-block");
                 status.textContent = message;
-                status.style.display = 'block';
+                status.classList.add(["bg-danger"])
                 
                 if (type === 'success') {
+                    status.classList.replace("bg-danger","bg-success")
                     setTimeout(() => {
-                        status.style.display = 'none';
+                        status.classList.replace("d-block","d-none");
+                        status.classList.remove("bg-success");
                     }, 3000);
                 }
             }
