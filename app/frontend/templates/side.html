@@ -294,7 +294,8 @@
 
         // Mise à jour du graphique
         function updateChart(totalSeries, availableSeries, cpuSeries) {
-            const labels = [];
+            const labelsRam = [];
+            const labelsCpu = [];
             const ramUsagePercent = [];
             const ramUsageGB = [];
             const cpuUsagePercent = [];
@@ -313,7 +314,6 @@
                 
                 // Trouver le point correspondant dans les données available
                 const availablePoint = availableSeries.values[index];
-                const cpuPoint = cpuSeries.value[index];
                 if (availablePoint && availablePoint[0] === timestamp) {
                     const availableBytes = parseFloat(availablePoint[1]);
                     const usedBytes = totalBytes - availableBytes;
@@ -322,19 +322,31 @@
                     ramUsageGBmax = totalBytes / (1024 * 1024 * 1024);
                     
 
-                    labels.push(new Date(timestamp * 1000).toLocaleTimeString());
+                    labelsRam.push(new Date(timestamp * 1000).toLocaleTimeString());
                     ramUsagePercent.push(usagePercent.toFixed(2));
                     ramUsageGB.push(usageGB.toFixed(2));
                 }
 
             });
 
+
+            cpuSeries.values.forEach((cpuPoint) => {
+              const timestamp = cpuPoint[0];
+              labelsCpu.push(new Date(timestamp * 1000).toLocaleTimeString());
+              cpuUsagePercent.push(cpuPoint[1].toFixed(2));
+
+            });
+
             // Mise à jour des données du graphique
-            RamChart.data.labels = labels;
+            RamChart.data.labels = labelsRam;
             RamChart.data.datasets[0].data = ramUsagePercent;
             RamChart.data.datasets[1].data = ramUsageGB;
             RamChart.options.scales.y1.max = ramUsageGBmax;
             RamChart.update();
+
+            CpuChart.data.labels=labelsCpu;
+            CpuChart.data.datasets[0].data = cpuUsagePercent;
+            CpuChart.update();
         }
 
         // Utilitaires
