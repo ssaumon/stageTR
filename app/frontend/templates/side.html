@@ -300,7 +300,10 @@
             const cpuUsagePercent = [];
             let ramUsageGBmax = 0;
 
+            console.log(totalSeries)
+            console.log(availableSeries)
             console.log(cpuSeries)
+            
 
             // Traitement des données
             totalSeries.values.forEach((totalPoint, index) => {
@@ -309,6 +312,7 @@
                 
                 // Trouver le point correspondant dans les données available
                 const availablePoint = availableSeries.values[index];
+                const cpuPoint = cpuSeries.value[index];
                 if (availablePoint && availablePoint[0] === timestamp) {
                     const availableBytes = parseFloat(availablePoint[1]);
                     const usedBytes = totalBytes - availableBytes;
