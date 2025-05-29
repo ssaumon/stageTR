@@ -39,7 +39,7 @@ test=1
 while [ $test -eq 1 ];
 do
     rep=$(curl --silent $1:5001/metrics)
-    rep=${rep:0:1}
+    rep=${rep:1:2}
     echo $rep
     if [ "$rep" = "#"  ]; then
         test=0
