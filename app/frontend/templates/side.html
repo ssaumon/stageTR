@@ -332,8 +332,9 @@
 
             cpuSeries.values.forEach((cpuPoint) => {
               const timestamp = cpuPoint[0];
+              const percentCpu = parseFloat(cpuPoint[1]);
               labelsCpu.push(new Date(timestamp * 1000).toLocaleTimeString());
-              cpuUsagePercent.push(cpuPoint[1].toFixed(2));
+              cpuUsagePercent.push(percentCpu.toFixed(2));
 
             });
 
