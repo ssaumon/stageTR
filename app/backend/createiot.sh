@@ -31,6 +31,18 @@ while [ -z $ip ];
 do
 ip=$(./backend/ipvm.sh $1)
 done
+
+rep=""
+test=1
+while [ $test -eq 1 ];
+do
+    rep=$(curl --silent $1:5001)
+    rep=${rep:0:1}
+    if [ "$rep" = "<"  ]; then
+        test=0
+    fi
+done
+
 echo "$ip $1 " >> /etc/hosts
 mysql -u root --password='bonjour' --database=BDD_VMs -e "UPDATE iot SET statut = 'running' WHERE nom = '$1'; COMMIT;"
 echo "VM créée"
