@@ -12,7 +12,7 @@ cur=cnx.cursor()
 app = Flask(__name__)
 backip=""
 ips = subprocess.run(["ifconfig"],stdout=subprocess.PIPE,text=True)
-backip = ips.stdout[1].split(" ")[2]
+backip = ips.stdout.split("\n")[1].split(" ")[2]
 
 def majetatvm():
     global cur
