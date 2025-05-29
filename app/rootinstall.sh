@@ -75,7 +75,16 @@ else
     curl https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js > frontend/static/Chart.js
 fi
 
-BACKIP=127.0.0.1
-export BACKIP=127.0.0.1
+
+if [ -f "frontend/static/hl.js" ]; then
+    echo highlight.js déjà installé
+else
+    echo "installation de highlight.js"
+    mkdir frontend/static
+    touch frontend/static/hl.js
+    curl https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js > frontend/static/hl.js
+fi
+
+
 
 python3 frontend/app.py 
