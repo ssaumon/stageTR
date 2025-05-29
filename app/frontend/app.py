@@ -65,13 +65,10 @@ def maj_prometheus():
 def del_prometheus_instance(instances):
     subprocess.run(["systemctl", "stop", "prometheus"])
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"],stdout=subprocess.PIPE,text=True)
-    reponse=enable.stdout.read().split("\n")
-    test=True
-    while test:
-        for li in reponse:
-            if re.search(r".*ready to receive web requests.*"):
-                test=False
-        reponse=enable.stdout.split("\n")
+    for line in enable.stdout:
+        if re.search(r".*ready to receive web requests.*",line):
+            break
+
     for instance in instances:
         subprocess.run(["curl", "--silent", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="'+instance+':9100"}'])
     
