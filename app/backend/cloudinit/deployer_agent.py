@@ -42,7 +42,7 @@ def update():
 
 @app.route("/delnode/<node>", methods=["GET"])
 def update(node):
-    subprocess.run("kubectl", "delete", "node", node)
+    subprocess.run(["kubectl", "delete", "node", node])
     return "node supprimé", 200
 
 app.run(host="0.0.0.0", port=5001)

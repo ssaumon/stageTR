@@ -62,15 +62,20 @@ def maj_prometheus():
             f.write(row)
     subprocess.Popen(["systemctl", "restart", "prometheus"])
 
-def del_prometheus_instance(instance):
+def del_prometheus_instance(instances):
     subprocess.run(["systemctl", "stop", "prometheus"])
-    enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"])
-    time.sleep(1)
-    print(instance)
-    subprocess.run(["curl", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="'+instance+':9100"}'])
-    print(instance)
-    subprocess.run(["curl", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/clean_tombstones"])
-    print(instance)
+    enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"],stdout=subprocess.PIPE,text=True)
+    reponse=enable.stdout.split("\n")
+    test=True
+    while test:
+        for li in reponse:
+            if re.search(r".*ready to receive web requests.*"):
+                test=False
+        reponse=enable.stdout.split("\n")
+    for instance in instances:
+        subprocess.run(["curl", "--silent", "-X", "POST", "-g", 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="'+instance+':9100"}'])
+    
+    subprocess.run(["curl", "--silent", "-X", "POST", "http://localhost:9090/api/v1/admin/tsdb/clean_tombstones"])
     enable.kill()
     subprocess.run(["systemctl", "start", "prometheus"])
 
@@ -239,8 +244,8 @@ def deledge():
 
         cur.execute("SELECT nom FROM iot WHERE cluster = %s", (nom,))
         iter = [n[0] for n in cur.fetchall()]
+        del_prometheus_instance(iter)
         for iot in iter:
-            del_prometheus_instance(iot)
             subprocess.run(["./backend/deleteVM.sh", iot])
             cur.execute("DELETE FROM iot WHERE nom = %s;", (iot,))
             cnx.commit()
