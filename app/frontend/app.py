@@ -65,7 +65,7 @@ def maj_prometheus():
 def del_prometheus_instance(instances):
     subprocess.run(["systemctl", "stop", "prometheus"])
     enable=subprocess.Popen(["prometheus", "--web.enable-admin-api"],stdout=subprocess.PIPE,text=True)
-    reponse=enable.stdout.split("\n")
+    reponse=enable.stdout.read().split("\n")
     test=True
     while test:
         for li in reponse:
