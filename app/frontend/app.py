@@ -259,6 +259,9 @@ def deliot():
     data = request.form.to_dict()
     if "nom" in data.keys():
         nom=data["nom"]
+        cur.execute("SELECT cluster FROM iot WHERE nom = %s;",(nom,))
+        edge=cur.fetchone()[0]
+        requests.get(f"http://{edge}:5001/delnode/{nom}")
         cur.execute("DELETE FROM iot WHERE nom = %s;", (nom,))
         cnx.commit()
         del_prometheus_instance(nom)
