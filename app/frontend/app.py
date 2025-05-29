@@ -241,6 +241,8 @@ def delapp():
         nom=data["nom"]
         cur.execute("DELETE FROM applications WHERE nom = %s;", (nom,))
         cnx.commit()
+        cur.execute("DELETE FROM associations WHERE application = %s;", (nom,))
+        cnx.commit()
     cur.execute("SELECT * from applications;")
     apps=cur.fetchall()
     return render_template("app.j2", apps=apps, backip=backip)
@@ -258,6 +260,8 @@ def deledge():
         cnx.commit()
         del_prometheus_instance(nom)
         subprocess.run(["./backend/deleteVM.sh", nom])
+        cur.execute("DELETE FROM associations WHERE cluster = %s;", (nom,))
+        cnx.commit()
 
 
         cur.execute("SELECT nom FROM iot WHERE cluster = %s", (nom,))
@@ -267,6 +271,7 @@ def deledge():
             subprocess.run(["./backend/deleteVM.sh", iot])
             cur.execute("DELETE FROM iot WHERE nom = %s;", (iot,))
             cnx.commit()
+
             
 
     cur.execute("SELECT * from edge;")
