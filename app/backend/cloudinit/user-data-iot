@@ -15,8 +15,8 @@ chpasswd:
 
 runcmd:
   -  curl -sfL https://get.k3s.io | {{k3scmd}}
-  - sleep 7 
-  - bash /home/ubuntu/start.sh
+  - apt update -y
+  - apt install -y prometheus-node-exporter
 
 write_files:
   - path: /home/ubuntu/start.sh
