@@ -104,10 +104,25 @@
                           <input type="hidden" value="{{nom}}" name="nom"/>
                           <textarea style="height:75vh;" class="form-control" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
 
-                          <div id="yaml" style="height: 100%"></div>
+                          <div id="{{nom}}-yaml" style="height: 75vh"></div>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
                       </form> 
+
+                      <script>
+                        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+                  
+                        require(['vs/editor/editor.main'], function () {
+                          const value = `{{manifest}}`;
+                      
+                          const myEditor = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
+                            value,
+                            language: "yaml",
+                            automaticLayout: true,
+                          });
+                        });
+                    </script>
+
                     </div>
                   </div>
                 </div>
@@ -144,18 +159,5 @@
         </div>
       </div>
     </div>
-    <script>
-      require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
-
-      require(['vs/editor/editor.main'], function () {
-        const value = `{{manifest}}`;
-    
-        const myEditor = monaco.editor.create(document.getElementById("yaml"), {
-          value,
-          language: "yaml",
-          automaticLayout: true,
-        });
-      });
-  </script>
   </body>
 </html>
