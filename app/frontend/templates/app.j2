@@ -98,7 +98,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="updateEditorValue('{{nom}}')">
+                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="return updateEditorValue('{{nom}}')">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
