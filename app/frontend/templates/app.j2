@@ -128,7 +128,7 @@
                         function updateEditorValue(nom) {
                           let content = window["editor_" + nom].getValue();
                           document.getElementById("man-" + nom).value = content;
-                          return; // continue la soumission
+                          return true;
                         }
                     </script>
 
