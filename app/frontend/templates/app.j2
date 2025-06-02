@@ -118,18 +118,14 @@
                         require(['vs/editor/editor.main'], function () {
                           const value = `{{manifest}}`;
                       
-                          editor_{{nom}} = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
+                          let editor_{{nom}} = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
                             value,
                             language: "yaml",
                             automaticLayout: true,
                           });
                         });
 
-                        function updateEditorValue(nom) {
-                          let content = window["editor_" + nom].getValue();
-                          document.getElementById("man-" + nom).value = content;
-                          return true;
-                        }
+
                     </script>
 
                     </div>
@@ -168,5 +164,13 @@
         </div>
       </div>
     </div>
+    <script>
+
+      function updateEditorValue(nom) {
+        let content = window["editor_" + nom].getValue();
+        document.getElementById("man-" + nom).value = content;
+        return true;
+      }
+    </script>
   </body>
 </html>
