@@ -112,13 +112,12 @@
                       </form> 
 
                       <script>
-                        let editor_{{nom}};
                         require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
                   
                         require(['vs/editor/editor.main'], function () {
                           const value = `{{manifest}}`;
                       
-                          let editor_{{nom}} = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
+                          window["editor_{{nom}}"] = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
                             value,
                             language: "yaml",
                             automaticLayout: true,
