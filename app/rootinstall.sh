@@ -76,13 +76,15 @@ else
 fi
 
 
-if [ -f "frontend/static/hl.js" ]; then
-    echo highlight.js déjà installé
+if [ -f "frontend/static/monaco-editor" ]; then
+    echo monaco déjà installé
 else
-    echo "installation de highlight.js"
+    echo "installation de monaco"
     mkdir frontend/static
-    touch frontend/static/hl.js
-    curl https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js > frontend/static/hl.js
+    touch frontend/static/monaco-editor.tgz
+    curl https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.52.2.tgz > monaco-editor.tgz
+    tar -xf monaco-editor.tgz -C frontend/static
+    rm monaco-editor.tgz
 fi
 
 
