@@ -98,11 +98,11 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="return updateEditorValue('{{nom}}')">
+                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="updateEditorValue('{{nom}}')">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
-                          <textarea type="hidden" name="manifest" id="man-{{nom}}"></textarea>
+                          <textarea type="hidden" class="d-none" name="manifest" id="man-{{nom}}"></textarea>
                           <!--
                           <textarea style="height:75vh;" class="form-control" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
                           -->
@@ -126,9 +126,9 @@
                         });
 
                         function updateEditorValue(nom) {
-                          const content = window["editor_" + nom].getValue();
+                          let content = window["editor_" + nom].getValue();
                           document.getElementById("man-" + nom).value = content;
-                          return true; // continue la soumission
+                          return; // continue la soumission
                         }
                     </script>
 
