@@ -102,9 +102,10 @@
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
+                          <!--
                           <textarea style="height:75vh;" class="form-control" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
-
-                          <div id="{{nom}}-yaml" style="height: 75vh"></div>
+                          -->
+                          <div id="{{nom}}-yaml" name="manifest" style="height: 75vh"></div>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
                       </form> 
