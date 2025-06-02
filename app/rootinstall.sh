@@ -83,7 +83,7 @@ else
     mkdir frontend/static
     touch frontend/static/monaco-editor.tgz
     curl https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.52.2.tgz > frontend/static/monaco-editor.tgz
-    tar -xf monaco-editor.tgz -C frontend/static/monaco-editor
+    tar -xf frontend/static/monaco-editor.tgz -C frontend/static/monaco-editor
     rm frontend/static/monaco-editor.tgz
 fi
 
