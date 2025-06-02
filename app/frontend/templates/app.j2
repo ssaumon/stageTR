@@ -98,30 +98,38 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://{{backip}}:80/modifapp" method="post">
+                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="return updateEditorValue('{{nom}}')">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
+                          <input type="hidden" name="manifest" id="man-{{nom}}">
                           <!--
                           <textarea style="height:75vh;" class="form-control" id="man" placeholder="Manifest" name="manifest">{{manifest}}</textarea>
                           -->
-                          <div id="{{nom}}-yaml" name="manifest" style="height: 75vh"></div>
+                          <div id="{{nom}}-yaml" style="height: 75vh"></div>
                         </div>
                         <button type="submit" class="btn btn-warning">Modifier</button>
                       </form> 
 
                       <script>
+                        let editor_{{nom}};
                         require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
                   
                         require(['vs/editor/editor.main'], function () {
                           const value = `{{manifest}}`;
                       
-                          const myEditor = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
+                          editor_{{nom}} = monaco.editor.create(document.getElementById("{{nom}}-yaml"), {
                             value,
                             language: "yaml",
                             automaticLayout: true,
                           });
                         });
+
+                        function updateEditorValue(nom) {
+                          const content = window["editor_" + nom].getValue();
+                          document.getElementById("man-" + nom).value = content;
+                          return true; // continue la soumission
+                        }
                     </script>
 
                     </div>
