@@ -146,17 +146,33 @@
 
               <div class="modal-body justify-content-center">
 
-                <form class="form" action="http://{{backip}}:80/createapp" method="post">
+                <form class="form" action="http://{{backip}}:80/createapp" method="post" onsubmit="return updateCreationValue('manifest')">
                   <div class="mb-3 mt-3">
                     <label for="nom" class="form-label">Nom :</label>
                     <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
                   </div>
                   <div class="mb-3">
                     <label for="manifest" class="form-label">Manifest de l'application :</label>
-                    <textarea class="form-control" id="manifest" placeholder="Manifest" name="manifest"></textarea>
+                    <textarea type="hidden" class="d-none" id="manifest" name="manifest"></textarea>
+                    <div id="yamlman" style="height: 75vh"></div>
                   </div>
                   <button type="submit" class="btn btn-dark">Ajouter</button>
                 </form>
+                <script>
+                  require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+            
+                  require(['vs/editor/editor.main'], function () {
+                    const value = ``;
+                
+                    window["creation"] = monaco.editor.create(document.getElementById("yamlman"), {
+                      value,
+                      language: "yaml",
+                      automaticLayout: true,
+                    });
+                  });
+
+
+              </script>
               </div>
             </div>
           </div>
@@ -168,6 +184,12 @@
       function updateEditorValue(nom) {
         let content = window["editor_" + nom].getValue();
         document.getElementById("man-" + nom).value = content;
+        return true;
+      }
+
+      function updateCreationValue(nom) {
+        let content = window["creation"].getValue();
+        document.getElementById("manifest").value = content;
         return true;
       }
     </script>

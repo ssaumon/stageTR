@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect
 from pathlib import Path
 import subprocess
 import requests
@@ -82,7 +82,7 @@ def del_prometheus_instance(instances):
 def index():
     global backip
     backip =request.host
-    return render_template("index.j2", backip=backip)
+    return redirect("http://"+backip+":80/edge")
 
 @app.route("/edge")
 def edge():
@@ -396,10 +396,6 @@ def details(vm):
 @app.route("/Chart.js", methods=["GET"])
 def chart():
     return send_file("static/Chart.js")
-
-@app.route("/hl.js", methods=["GET"])
-def hl():
-    return send_file("static/hl.js")
 
 
 
