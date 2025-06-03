@@ -153,9 +153,18 @@
                       document.getElementById("cpu").classList.add("border-danger");
                       test =  false;
                     }
-                    if (form["cluster"].value == "") {
+
+                    let clusterSelected = false;
+                    for (let i = 0; i < clusters.length; i++) {
+                      if (clusters[i].checked) {
+                        clusterSelected = true;
+                        break;
+                      }
+                    }
+                  
+                    if (!clusterSelected) {
                       document.getElementById("btnCluster").classList.add("border-danger");
-                      test =  false;
+                      test= false;
                     }
                     return test;
                   }
