@@ -142,7 +142,7 @@
             </div>
             <div class="modal-body justify-content-center">
                 
-              <form class="form" action="http://{{backip}}:80/createedge" method="post">
+              <form class="form" action="http://{{backip}}:80/createedge" method="post" name="addedge" onsubmit="return validateFormAdd()">
                 <div class="mb-3 mt-3">
                   <label for="nom" class="form-label">Nom :</label>
                   <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
@@ -158,6 +158,26 @@
 
                 <button type="submit" class="btn btn-dark">Submit</button>
               </form> 
+              <script>
+              function validateFormAdd() {
+                let form = document.forms["addedge"];
+                let test = true
+                if (form["nom"].value == "") {
+                  document.getElementById("nom").classList.add("border-danger");
+                  test =  false;
+                }
+                if (form["ram"].value == "") {
+                  document.getElementById("ram").classList.add("border-danger");
+                  test =  false;
+                }
+                if (form["cpu"].value == "") {
+                  document.getElementById("cpu").classList.add("border-danger");
+                  test =  false;
+                }
+
+                return test;
+              }
+              </script>
             </div>
           </div>
         </div>
