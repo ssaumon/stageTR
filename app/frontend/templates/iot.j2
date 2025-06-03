@@ -142,19 +142,19 @@
                     let form = document.forms["addiot"];
                     let test = true
                     if (form["nom"].value == "") {
-                      alert("Obligatoire");
+                      document.getElementById("nom").classList.add("border-danger");
                       test =  false;
                     }
                     if (form["ram"].value == "") {
-                      alert("Obligatoire");
+                      document.getElementById("ram").classList.add("border-danger");
                       test =  false;
                     }
                     if (form["cpu"].value == "") {
-                      alert("Obligatoire");
+                      document.getElementById("cpu").classList.add("border-danger");
                       test =  false;
                     }
                     if (form["cluster"].value == "") {
-                      alert("Obligatoire");
+                      document.getElementById("cluster").classList.add("border-danger");
                       test =  false;
                     }
                     return test;
