@@ -116,7 +116,7 @@
 
                   <div class="mb-3">
                     <div class="dropdown">
-                      <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button class="btn btn-dark dropdown-toggle" name="btnCluster" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Cluster
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -154,7 +154,7 @@
                       test =  false;
                     }
                     if (form["cluster"].value == "") {
-                      document.getElementById("cluster").classList.add("btn-danger");
+                      document.getElementById("btnCluster").classList.add("border-danger");
                       test =  false;
                     }
                     return test;
