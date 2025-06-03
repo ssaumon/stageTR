@@ -141,19 +141,19 @@
                   function validateForm() {
                     let form = document.forms["addiot"];
                     let test = true
-                    if (form["nom"] == "") {
+                    if (form["nom"].value == "") {
                       alert("Obligatoire");
                       test =  false;
                     }
-                    if (form["ram"] == "") {
+                    if (form["ram"].value == "") {
                       alert("Obligatoire");
                       test =  false;
                     }
-                    if (form["cpu"] == "") {
+                    if (form["cpu"].value == "") {
                       alert("Obligatoire");
                       test =  false;
                     }
-                    if (form["cluster"] == "") {
+                    if (form["cluster"].value == "") {
                       alert("Obligatoire");
                       test =  false;
                     }
