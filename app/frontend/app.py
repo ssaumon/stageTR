@@ -138,7 +138,6 @@ def create_edge():
     err=None
     data = request.form.to_dict()
     if "nom" in data.keys() and "ram" in data.keys() and "cpu" in data.keys():
-        #r=requests.post(f"{backip}:5000/createedge",data=data)
         nom,ram,cpu=data["nom"],data["ram"],data["cpu"]
         cur.execute("SELECT nom from iot;")
         li=[n[0] for n in cur.fetchall()]

@@ -99,7 +99,7 @@
 
               <div class="modal-body justify-content-center">
 
-                <form class="form" action="http://{{backip}}:80/createiot" method="post">
+                <form name="addiot" class="form" action="http://{{backip}}:80/createiot" method="post" onsubmit="return validateForm()">
                   <div class="mb-3 mt-3">
                     <label for="nom" class="form-label">Nom :</label>
                     <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
@@ -136,6 +136,31 @@
 
                   <button type="submit" class="btn btn-primary">Ajouter</button>
                 </form>
+                <script>
+
+                  function validateForm() {
+                    let form = document.forms["addiot"];
+                    let test = true
+                    if (form["nom"] == "") {
+                      alert("Obligatoire");
+                      test =  false;
+                    }
+                    if (form["ram"] == "") {
+                      alert("Obligatoire");
+                      test =  false;
+                    }
+                    if (form["cpu"] == "") {
+                      alert("Obligatoire");
+                      test =  false;
+                    }
+                    if (form["cluster"] == "") {
+                      alert("Obligatoire");
+                      test =  false;
+                    }
+                    return true;
+                  }
+
+                </script>
               </div>
             </div>
           </div>
