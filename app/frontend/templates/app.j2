@@ -85,7 +85,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body justify-content-center">
-                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" onsubmit="return updateEditorValue('{{nom}}')">
+                      <form class="form" action="http://{{backip}}:80/modifapp" method="post" name="form-{{nom}}" onsubmit="return updateEditorValue('{{nom}}')">
                         <div class="mb-3">
                           <label for="ram" class="form-label">Manifest de l'application :</label>
                           <input type="hidden" value="{{nom}}" name="nom"/>
@@ -133,7 +133,7 @@
 
               <div class="modal-body justify-content-center">
 
-                <form class="form" action="http://{{backip}}:80/createapp" method="post" onsubmit="return updateCreationValue('manifest')">
+                <form class="form" action="http://{{backip}}:80/createapp" method="post" name="form" onsubmit="return updateCreationValue('manifest')">
                   <div class="mb-3 mt-3">
                     <label for="nom" class="form-label">Nom :</label>
                     <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
@@ -171,13 +171,35 @@
       function updateEditorValue(nom) {
         let content = window["editor_" + nom].getValue();
         document.getElementById("man-" + nom).value = content;
-        return true;
+        
+        let test =true;
+        let form = document.forms["form-"+nom];
+        if (form["nom"].value == "") {
+          document.getElementById("nom").classList.add("border-danger");
+          test =  false;
+        }
+        if (form["manifest"].value == "") {
+          document.getElementById(nom+"-yaml").classList.add("border-danger");
+          test =  false;
+        }
+        return test;
       }
 
       function updateCreationValue(nom) {
         let content = window["creation"].getValue();
         document.getElementById("manifest").value = content;
-        return true;
+
+        let test =true;
+        let form = document.forms["form"];
+        if (form["nom"].value == "") {
+          document.getElementById("nom").classList.add("border-danger");
+          test =  false;
+        }
+        if (form["manifest"].value == "") {
+          document.getElementById("yamlman").classList.add("border-danger");
+          test =  false;
+        }
+        return test;
       }
     </script>
   </body>
