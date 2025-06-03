@@ -157,9 +157,11 @@ def create_edge():
             cur.execute("INSERT INTO edge VALUES (%s, %s,%s,'en création');", (nom,cpu,ram))
             cnx.commit()
             subprocess.Popen(["./backend/createedge.sh", nom, ram, cpu])
-        cur.execute("SELECT * from edge;")
-        vms=cur.fetchall()
-        maj_prometheus()
+    else: 
+        err="Il manque des informations"
+    cur.execute("SELECT * from edge;")
+    vms=cur.fetchall()
+    maj_prometheus()
     cur.execute("SELECT * from applications;")
     applis=cur.fetchall()
     cur.execute("SELECT cluster,application from associations;")
