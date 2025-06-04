@@ -76,16 +76,6 @@ else
 fi
 
 
-if [ -f "frontend/static/monaco-editor" ]; then
-    echo monaco déjà installé
-else
-    echo "installation de monaco"
-    mkdir -p frontend/static/monaco-editor
-    touch frontend/static/monaco-editor.tgz
-    curl https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.52.2.tgz > frontend/static/monaco-editor.tgz
-    tar -xf frontend/static/monaco-editor.tgz -C frontend/static/monaco-editor
-    rm frontend/static/monaco-editor.tgz
-fi
 
 
 
