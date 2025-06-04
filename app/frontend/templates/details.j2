@@ -79,7 +79,6 @@
             let autoRefreshInterval;
             let isAutoRefresh = false;
     
-            // Configuration du graphique
             const chartConfigRam = {
                 type: 'line',
                 data: {
@@ -207,7 +206,6 @@
               }
           };
     
-            // Initialisation du graphique
             function initChart() {
                 const ctxram = document.getElementById('ramChart').getContext('2d');
                 RamChart = new Chart(ctxram, chartConfigRam);
@@ -215,7 +213,6 @@
                 CpuChart = new Chart(ctxcpu, chartConfigCpu);
             }
     
-            // Fonction pour récupérer les données depuis Prometheus
             async function fetchData() {
                 const prometheusUrl = 'http://{{backip}}:9090';
                 const vmName = "{{vm}}:9100";
@@ -227,9 +224,9 @@
                 try {
                     const now = Math.floor(Date.now() / 1000);
                     const start = now - getSecondsFromRange(timeRange);
-                    const step = Math.max(Math.floor((now - start) / 100), 15); // Max 100 points
+                    const step = Math.max((Math.floor((now - start) / 100)%60*60)+60,60);
     
-                    // Requêtes Prometheus pour la mémoire
+
                     const [totalData, availableData, cpuData] = await Promise.all([
                         queryPrometheusRange(prometheusUrl, `node_memory_MemTotal_bytes{instance="${vmName}"}`, start, now, step),
                         queryPrometheusRange(prometheusUrl, `node_memory_MemAvailable_bytes{instance="${vmName}"}`, start, now, step),
@@ -246,7 +243,7 @@
                 }
             }
     
-            // Requête vers Prometheus avec range
+
             async function queryPrometheusRange(baseUrl, query, start, end, step) {
                 const url = `${baseUrl}/api/v1/query_range?query=${encodeURIComponent(query)}&start=${start}&end=${end}&step=${step}`;
                 
@@ -255,7 +252,7 @@
                 return data.data.result;
             }
     
-            // Mise à jour du graphique
+
             function updateChart(totalSeries, availableSeries, cpuSeries) {
                 const labelsRam = [];
                 const labelsCpu = [];
@@ -269,13 +266,13 @@
                 console.log(cpuSeries)
                 
     
-                // Traitement des données
+
                 totalSeries.values.forEach((totalPoint, index) => {
                     console.log(totalPoint)
                     const timestamp = totalPoint[0];
                     const totalBytes = parseFloat(totalPoint[1]);
                     
-                    // Trouver le point correspondant dans les données available
+
                     const availablePoint = availableSeries.values[index];
                     if (availablePoint && availablePoint[0] === timestamp) {
                         const availableBytes = parseFloat(availablePoint[1]);
@@ -301,7 +298,7 @@
     
                 });
     
-                // Mise à jour des données du graphique
+
                 RamChart.data.labels = labelsRam;
                 RamChart.data.datasets[0].data = ramUsagePercent;
                 RamChart.data.datasets[1].data = ramUsageGB;
@@ -313,7 +310,7 @@
                 CpuChart.update();
             }
     
-            // Utilitaires
+
             function getSecondsFromRange(range) {
                 const multipliers = { 'm': 60, 'h': 3600 };
                 const unit = range.slice(-1);
@@ -336,7 +333,7 @@
                 }
             }
     
-            // Initialisation
+
             document.addEventListener('DOMContentLoaded', function() {
                 initChart();
                 fetchData()
