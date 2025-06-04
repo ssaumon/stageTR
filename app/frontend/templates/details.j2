@@ -225,13 +225,13 @@
                     const now = Math.floor(Date.now() / 1000);
                     const span = getSecondsFromRange(timeRange);
                     const start = now - span;
-
+                    let step;
                     if (span < 1800){
-                        const step = Math.max(Math.floor(Math.floor((now - start) / 100)/10)*10+10,10);
+                        step = Math.max(Math.floor(Math.floor((now - start) / 100)/10)*10+10,10);
                     } else if (span < 7200){
-                        const step = Math.max(Math.floor(Math.floor((now - start) / 100)/60)*60+60,60);
+                        step = Math.max(Math.floor(Math.floor((now - start) / 100)/60)*60+60,60);
                     }else{
-                        const step = Math.max(Math.floor(Math.floor((now - start) / 100)/300)*300+300,300);
+                        step = Math.max(Math.floor(Math.floor((now - start) / 100)/300)*300+300,300);
                     }
 
                     const [totalData, availableData, cpuData] = await Promise.all([
