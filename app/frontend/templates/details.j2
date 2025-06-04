@@ -224,7 +224,7 @@
                 try {
                     const now = Math.floor(Date.now() / 1000);
                     const start = now - getSecondsFromRange(timeRange);
-                    const step = Math.max((Math.floor((now - start) / 100)%60*60)+60,60);
+                    const step = Math.max(Math.floor(Math.floor((now - start) / 100)/60)*60+60,60);
     
 
                     const [totalData, availableData, cpuData] = await Promise.all([
