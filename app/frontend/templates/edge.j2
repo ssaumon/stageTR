@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">  
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="d-flex">
+      <div class="bg-dark text-white" id="sidebar" style="width: 250px; height: 100vh; padding: 10px; border-right: 1px solid #444;">
+        <h3 class="text-center pb-5">Menu</h3>
+        
+                            
+        <a href="http://{{backip}}:80/edge" class="btn btn-dark w-100 text-start mb-2 active">Edge</a>
+                            
+        <a href="http://{{backip}}:80/iot" class="btn btn-dark w-100 text-start mb-2">IoT</a>
+
+            
+        <a href="http://{{backip}}:80/app" class="btn btn-dark w-100 text-start mb-2">Application</a>    
+              
+      </div>
+      <div class="container-fluid">
+        <h1 class="d-flex justify-content-center">VM Edge</h1>
+
+        {% if err %}
+        <div class="alert alert-danger" role="alert">
+          {{err}}
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-end m-4">
+          <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+            Ajouter une VM Edge
+          </button>
+        </div>
+
+        <div class="m-4">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">CPU</th>
+                <th scope="col">RAM</th>
+                <th scope="col">état</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for nom,cpu,ram,statut in vms %}
+              <tr>
+                <td>{{nom}}</td>
+                <td>{{cpu}}</td>
+                <td>{{ram}}</td>
+                <td>{{statut}}</td>
+                <td>
+                  <button type="button" class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal{{nom}}">
+                    Supprimer
+                  </button>
+
+                  <button type="button" class=" btn btn-warning" data-bs-toggle="modal" data-bs-target="#app{{nom}}">
+                    Applications
+                  </button>
+
+                  <a class="btn btn-primary" href="http://{{backip}}:80/details/{{nom}}" role="button">Details</a>
+                </td>
+              </tr>
+              
+              <div class="modal fade " id="modal{{nom}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Supprimer la VM {{nom}} ?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body justify-content-center">
+                      <form class="form" action="http://{{backip}}:80/deledge" method="post">
+                        <input type="hidden" name="nom" value="{{nom}}">
+    
+                        <button type="submit" class="btn btn-dark">Supprimer</button>
+                      </form> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="modal fade " id="app{{nom}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Applications du cluster {{nom}} ?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body justify-content-center">
+                      <form class="form" action="http://{{backip}}:80/affectapp" method="post">
+                        
+                        <div class="mb-3">
+                          
+
+                          <input type="hidden" name="cluster" value="{{nom}}">
+                            
+                          <div class="list-group">
+      
+                            {% for nomapp,man in applis %}
+        
+                            
+                              <input type="checkbox" class=" btn-check" name="applis" value="{{nomapp}}" id="{{nom}}-{{nomapp}}">
+                              <label class="btn list-group-item list-group-item-action " for="{{nom}}-{{nomapp}}">{{nomapp}}</label>
+                                
+              
+                                
+                            {% endfor %}
+      
+                            
+                          </div>
+                        </div>
+      
+                        <button type="submit" class="btn btn-primary" value="ajouter" name="bouton">Ajouter</button>
+                        <button type="submit" class="btn btn-danger" value="supprimer" name="bouton">Supprimer</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal fade " id="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Ajouter une VM Edge</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                
+              <form class="form" action="http://{{backip}}:80/createedge" method="post" name="addedge" onsubmit="return validateFormAdd()">
+                <div class="mb-3 mt-3">
+                  <label for="nom" class="form-label">Nom :</label>
+                  <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
+                </div>
+                <div class="mb-3">
+                  <label for="ram" class="form-label">RAM (Mo) :</label>
+                  <input type="number" class="form-control" id="ram" placeholder="Mo" name="ram">
+                </div>
+                <div class="mb-3">
+                  <label for="cpu" class="form-label">CPU :</label>
+                  <input type="number" class="form-control" id="cpu" placeholder="" name="cpu">
+                </div>
+
+                <button type="submit" class="btn btn-dark">Submit</button>
+              </form> 
+              <script>
+              function validateFormAdd() {
+                let form = document.forms["addedge"];
+                let test = true
+                if (form["nom"].value == "") {
+                  document.getElementById("nom").classList.add("border-danger");
+                  test =  false;
+                }
+                if (form["ram"].value == "") {
+                  document.getElementById("ram").classList.add("border-danger");
+                  test =  false;
+                }
+                if (form["cpu"].value == "") {
+                  document.getElementById("cpu").classList.add("border-danger");
+                  test =  false;
+                }
+
+                return test;
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

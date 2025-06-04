@@ -1,0 +1,10 @@
+- name: Mise à jour du système
+  hosts: serveurs
+  become: yes  # pour sudo
+  tasks:
+    - name: Mise à jour des paquets
+      apt:
+        update_cache: yes
+    - name: Installation de k3s
+      apt:
+        

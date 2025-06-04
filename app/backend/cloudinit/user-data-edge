@@ -1,0 +1,124 @@
+#cloud-config
+hostname: "{{hostname}}"
+users:
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - {{ssh}}
+
+chpasswd:
+  list: |
+    ubuntu:bonjour
+  expire: False
+
+ntp:
+  enabled: true
+  servers:
+    - time.google.com
+    - ntp.ubuntu.com
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+
+
+
+
+runcmd:
+  - date -s "{{date}}"
+  - curl -sfL https://get.k3s.io | {{k3scmd}}
+  - bash /home/ubuntu/start.sh
+
+write_files:
+
+  - path: /etc/systemd/system/deployer-agent.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Service deployer python
+      After=network.target
+
+      [Service]
+      Type=simple
+      ExecStart=nohup /usr/bin/python3 /home/ubuntu/deployer_agent.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    append: true
+
+  - path: /home/ubuntu/start.sh
+    permissions: '0755'
+    content: |
+      apt update -y
+      apt install -y prometheus-node-exporter
+      apt install -y python3-pip
+      pip install flask
+      pip install requests
+      t=1
+      while [ $t -eq 1 ];
+      do
+        if [ -f /home/ubuntu/deployer_agent.py ]; then
+          t=0
+          echo 'test'
+        fi
+      done
+      sleep 1
+      mkdir var/lib/rancher/k3s/server/manifests/shared
+      systemctl enable deployer-agent.service
+      systemctl start deployer-agent.service
+
+    append: true
+
+  - path: /home/ubuntu/deployer_agent.py
+    content: |
+      import subprocess
+      from flask import Flask, request,jsonify
+      import json
+      from pathlib import Path
+      import requests
+
+      app = Flask(__name__)
+
+      @app.route("/")
+      def index():
+          return "valid", 200
+
+      @app.route("/create", methods=["POST"])
+      def create():
+          data=request.form.to_dict()
+          print(data)
+          nom,manifest = data["nom"],data["manifest"]
+          if (not Path(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}").is_file()):
+              subprocess.run(["touch",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+              with open(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}", 'w') as f:
+                  f.writelines(manifest)
+              subprocess.run(["kubectl","apply","-f",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+          return "valide", 200
+
+      @app.route("/delete", methods=["POST"])
+      def delete():
+          data=request.form.to_dict()
+          print(data)
+          nom = data["nom"]
+          subprocess.run(["kubectl","delete","-f",f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+          subprocess.run(["rm", f"/var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+          return "oui", 200
+
+      @app.route("/update", methods=["POST"])
+      def update():
+          data=request.form.to_dict()
+          print(data)
+          nom,manifest = data["nom"],data["manifest"]
+          if (Path.is_file(f"/var/lib/rancher/k3s/server/manifests/shared/{nom}")):
+              subprocess.run(["echo",f"{manifest} > /var/lib/rancher/k3s/server/manifests/shared/{nom}"])
+          return "oui", 200
+
+      @app.route("/delnode/<node>", methods=["GET"])
+      def delnode(node):
+          subprocess.run(["kubectl", "delete", "node", node])
+          return "node supprimé", 200
+
+      app.run(host="0.0.0.0", port=5001)
+    append: true
+  

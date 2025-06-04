@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisation RAM VM</title>
+    <script src="http://192.168.98.90/Chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .config-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .config-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        input, select, button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .metrics-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Utilisation RAM - VM</h1>
+        </div>
+
+        <div class="config-panel">
+            <div class="config-row">
+                <label>Période:</label>
+                <select id="timeRange">
+                    <option value="5m">5 minutes</option>
+                    <option value="15m">15 minutes</option>
+                    <option value="1h" selected>1 heure</option>
+                    <option value="6h">6 heures</option>
+                    <option value="24h">24 heures</option>
+                </select>
+            </div>
+            <div class="config-row">
+                <button onclick="fetchData()">🔄 Actualiser</button>
+            </div>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="chart-container">
+            <canvas id="ramChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="cpuChart"></canvas>
+      </div>
+
+    </div>
+
+    <script>
+        let RamChart;
+        let CpuChart;
+        let autoRefreshInterval;
+        let isAutoRefresh = false;
+
+        // Configuration du graphique
+        const chartConfigRam = {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Utilisation RAM (%)',
+                    data: [],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'RAM Utilisée (GB)',
+                    data: [],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Utilisation de la RAM en temps réel'
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Temps'
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Utilisation (%)'
+                        },
+                        min: 0,
+                        max: 100
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'RAM Utilisée (GB)'
+                        },
+                        min: 0
+                    }
+                }
+            }
+        };
+
+        const chartConfigCpu = {
+          type: 'line',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: 'Utilisation CPU (%)',
+                  data: [],
+                  borderColor: '#dc3545',
+                  backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                  borderWidth: 2,
+                  fill: true,
+                  tension: 0.4
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                  mode: 'index',
+                  intersect: false,
+              },
+              plugins: {
+                  title: {
+                      display: true,
+                      text: 'Utilisation du CPU en temps réel'
+                  },
+                  legend: {
+                      display: true,
+                      position: 'top'
+                  }
+              },
+              scales: {
+                  x: {
+                      display: true,
+                      title: {
+                          display: true,
+                          text: 'Temps'
+                      }
+                  },
+                  y: {
+                      type: 'linear',
+                      display: true,
+                      position: 'left',
+                      title: {
+                          display: true,
+                          text: 'Utilisation (%)'
+                      },
+                      min: 0,
+                      max: 100
+                  }
+              }
+          }
+      };
+
+        // Initialisation du graphique
+        function initChart() {
+            const ctxram = document.getElementById('ramChart').getContext('2d');
+            RamChart = new Chart(ctxram, chartConfigRam);
+            const ctxcpu = document.getElementById('cpuChart').getContext('2d');
+            CpuChart = new Chart(ctxcpu, chartConfigCpu);
+        }
+
+        // Fonction pour récupérer les données depuis Prometheus
+        async function fetchData() {
+            const prometheusUrl = 'http://192.168.98.90:9090';
+            const vmName = "{{vm}}:9100";
+            const timeRange = document.getElementById('timeRange').value;
+
+
+            showStatus('Récupération des données...', 'success');
+
+            try {
+                const now = Math.floor(Date.now() / 1000);
+                const start = now - getSecondsFromRange(timeRange);
+                const step = Math.max(Math.floor((now - start) / 100), 15); // Max 100 points
+
+                // Requêtes Prometheus pour la mémoire
+                const [totalData, availableData, cpuData] = await Promise.all([
+                    queryPrometheusRange(prometheusUrl, `node_memory_MemTotal_bytes{instance="${vmName}"}`, start, now, step),
+                    queryPrometheusRange(prometheusUrl, `node_memory_MemAvailable_bytes{instance="${vmName}"}`, start, now, step),
+                    queryPrometheusRange(prometheusUrl, `100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle",instance="${vmName}"}[5m])) * 100)`, start, now, step),
+                ]);
+
+
+                updateChart(totalData[0], availableData[0], cpuData[0]);
+                showStatus(`Données mises à jour avec succès (${totalData[0].values.length} points)`, 'success');
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                showStatus('Erreur lors de la récupération des données: ' + error.message, 'error');
+            }
+        }
+
+        // Requête vers Prometheus avec range
+        async function queryPrometheusRange(baseUrl, query, start, end, step) {
+            const url = `${baseUrl}/api/v1/query_range?query=${encodeURIComponent(query)}&start=${start}&end=${end}&step=${step}`;
+            
+            const response = await fetch(url);            
+            const data = await response.json();
+            return data.data.result;
+        }
+
+        // Mise à jour du graphique
+        function updateChart(totalSeries, availableSeries, cpuSeries) {
+            const labelsRam = [];
+            const labelsCpu = [];
+            const ramUsagePercent = [];
+            const ramUsageGB = [];
+            const cpuUsagePercent = [];
+            let ramUsageGBmax = 0;
+
+            console.log(totalSeries)
+            console.log(availableSeries)
+            console.log(cpuSeries)
+            
+
+            // Traitement des données
+            totalSeries.values.forEach((totalPoint, index) => {
+                console.log(totalPoint)
+                const timestamp = totalPoint[0];
+                const totalBytes = parseFloat(totalPoint[1]);
+                
+                // Trouver le point correspondant dans les données available
+                const availablePoint = availableSeries.values[index];
+                if (availablePoint && availablePoint[0] === timestamp) {
+                    const availableBytes = parseFloat(availablePoint[1]);
+                    const usedBytes = totalBytes - availableBytes;
+                    const usagePercent = (usedBytes / totalBytes) * 100;
+                    const usageGB = usedBytes / (1024 * 1024 * 1024);
+                    ramUsageGBmax = totalBytes / (1024 * 1024 * 1024);
+                    
+
+                    labelsRam.push(new Date(timestamp * 1000).toLocaleTimeString());
+                    ramUsagePercent.push(usagePercent.toFixed(2));
+                    ramUsageGB.push(usageGB.toFixed(2));
+                }
+
+            });
+
+
+            cpuSeries.values.forEach((cpuPoint) => {
+              const timestamp = cpuPoint[0];
+              const percentCpu = parseFloat(cpuPoint[1]);
+              labelsCpu.push(new Date(timestamp * 1000).toLocaleTimeString());
+              cpuUsagePercent.push(percentCpu.toFixed(2));
+
+            });
+
+            // Mise à jour des données du graphique
+            RamChart.data.labels = labelsRam;
+            RamChart.data.datasets[0].data = ramUsagePercent;
+            RamChart.data.datasets[1].data = ramUsageGB;
+            RamChart.options.scales.y1.max = ramUsageGBmax;
+            RamChart.update();
+
+            CpuChart.data.labels=labelsCpu;
+            CpuChart.data.datasets[0].data = cpuUsagePercent;
+            CpuChart.update();
+        }
+
+        // Utilitaires
+        function getSecondsFromRange(range) {
+            const multipliers = { 'm': 60, 'h': 3600 };
+            const unit = range.slice(-1);
+            const value = parseInt(range.slice(0, -1));
+            return value * multipliers[unit];
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initChart();
+            fetchData()
+        });
+    </script>
+</body>
+</html>

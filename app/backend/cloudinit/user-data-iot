@@ -1,0 +1,27 @@
+#cloud-config
+hostname: "{{hostname}}"
+users:
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - {{ssh}}
+      
+chpasswd:
+  list: |
+    ubuntu:bonjour
+  expire: False
+
+runcmd:
+  -  curl -sfL https://get.k3s.io | {{k3scmd}}
+  - apt update -y
+  - apt install -y prometheus-node-exporter
+
+write_files:
+  - path: /home/ubuntu/start.sh
+    permissions: '0755'
+    content: |
+      apt update -y
+      apt install -y prometheus-node-exporter
+    append: true
