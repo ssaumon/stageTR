@@ -155,7 +155,15 @@
                       document.getElementById("ram").classList.add("border-danger");
                       test =  false;
                     }
+                    if (form["ram"].value >= 512) {
+                      document.getElementById("ram").classList.add("border-danger");
+                      test =  false;
+                    }
                     if (form["cpu"].value == "") {
+                      document.getElementById("cpu").classList.add("border-danger");
+                      test =  false;
+                    }
+                    if (form["cpu"].value >= 1) {
                       document.getElementById("cpu").classList.add("border-danger");
                       test =  false;
                     }
