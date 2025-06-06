@@ -174,18 +174,9 @@
                       test =  false;
                     }
 
-                    let clusterSelected = false;
-                    for (let i = 0; i < form["cluster"].length; i++) {
-                      console.log(form["cluster"])
-                      if (form["cluster"][i].checked) {
-                        clusterSelected = true;
-                        break;
-                      }
-                    }
-                  
-                    if (!clusterSelected) {
+                    if (form["cluster"].value == "") {
                       document.getElementById("dropdownMenuButton").classList.add("border-danger");
-                      test= false;
+                      test =  false;
                     }
                     return test;
                   }
