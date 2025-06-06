@@ -147,6 +147,12 @@
                   function validateForm() {
                     let form = document.forms["addiot"];
                     let test = true
+
+                    document.getElementById("nom").classList.remove("border-danger");
+                    document.getElementById("ram").classList.remove("border-danger");
+                    document.getElementById("cpu").classList.remove("border-danger");
+                    document.getElementById("dropdownMenuButton").classList.remove("border-danger");
+
                     if (form["nom"].value == "") {
                       document.getElementById("nom").classList.add("border-danger");
                       test =  false;
@@ -170,6 +176,7 @@
 
                     let clusterSelected = false;
                     for (let i = 0; i < form["cluster"].length; i++) {
+                      console.log(form["cluster"])
                       if (form["cluster"][i].checked) {
                         clusterSelected = true;
                         break;
