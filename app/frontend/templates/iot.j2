@@ -108,7 +108,7 @@
                 <form name="addiot" class="form" action="http://{{backip}}:80/createiot" method="post" onsubmit="return validateForm()">
                   <div class="mb-3 mt-3">
                     <label for="nom" class="form-label">Nom :</label>
-                    <input type="nom" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
+                    <input type="text" class="form-control" id="nom" placeholder="Entrer le nom de la VM" name="nom">
                   </div>
                   <div class="mb-3">
                     <label for="ram" class="form-label">RAM (Mo) :</label>
@@ -147,6 +147,12 @@
                   function validateForm() {
                     let form = document.forms["addiot"];
                     let test = true
+
+                    document.getElementById("nom").classList.remove("border-danger");
+                    document.getElementById("ram").classList.remove("border-danger");
+                    document.getElementById("cpu").classList.remove("border-danger");
+                    document.getElementById("dropdownMenuButton").classList.remove("border-danger");
+
                     if (form["nom"].value == "") {
                       document.getElementById("nom").classList.add("border-danger");
                       test =  false;
@@ -155,22 +161,22 @@
                       document.getElementById("ram").classList.add("border-danger");
                       test =  false;
                     }
+                    if (form["ram"].value < 512) {
+                      document.getElementById("ram").classList.add("border-danger");
+                      test =  false;
+                    }
                     if (form["cpu"].value == "") {
                       document.getElementById("cpu").classList.add("border-danger");
                       test =  false;
                     }
-
-                    let clusterSelected = false;
-                    for (let i = 0; i < form["cluster"].length; i++) {
-                      if (form["cluster"][i].checked) {
-                        clusterSelected = true;
-                        break;
-                      }
+                    if (form["cpu"].value < 1) {
+                      document.getElementById("cpu").classList.add("border-danger");
+                      test =  false;
                     }
-                  
-                    if (!clusterSelected) {
+
+                    if (form["cluster"].value == "") {
                       document.getElementById("dropdownMenuButton").classList.add("border-danger");
-                      test= false;
+                      test =  false;
                     }
                     return test;
                   }

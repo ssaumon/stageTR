@@ -168,6 +168,11 @@
               function validateFormAdd() {
                 let form = document.forms["addedge"];
                 let test = true
+
+                document.getElementById("nom").classList.remove("border-danger");
+                document.getElementById("ram").classList.remove("border-danger");
+                document.getElementById("cpu").classList.remove("border-danger");
+
                 if (form["nom"].value == "") {
                   document.getElementById("nom").classList.add("border-danger");
                   test =  false;
@@ -180,6 +185,15 @@
                   document.getElementById("cpu").classList.add("border-danger");
                   test =  false;
                 }
+                if (form["cpu"].value < 2) {
+                  document.getElementById("cpu").classList.add("border-danger");
+                  test =  false;
+                }
+                if (form["ram"].value < 2048) {
+                  document.getElementById("ram").classList.add("border-danger");
+                  test =  false;
+                }
+
 
                 return test;
               }
