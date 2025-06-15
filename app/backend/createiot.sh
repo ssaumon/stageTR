@@ -12,7 +12,7 @@ ssh=$(cat backend/.ssh/id_rsa.pub)
 
 touch backend/cloudinit/user-data.d/$1
 cmd="K3S_URL=https://$ipedge:6443 K3S_TOKEN=$4 sh - "
-cat --show-tabs backend/cloudinit/user-data-iot | sed "s/{{hostname}}/$1/g" | sed "s|{{ssh}}|$ssh|g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
+cat backend/cloudinit/user-data-iot | sed "s/{{hostname}}/$1/g" | sed "s|{{ssh}}|$ssh|g" | sed "s|{{k3scmd}}|$cmd|g" > backend/cloudinit/user-data.d/$1
 
 
 if [ ! -d "backend/cloudinit/meta-data.d" ]; then
@@ -22,7 +22,7 @@ fi
 
 
 touch backend/cloudinit/meta-data.d/$1
-cat --show-tabs backend/cloudinit/meta-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/meta-data.d/$1
+cat backend/cloudinit/meta-data | sed "s/{{hostname}}/$1/g" > backend/cloudinit/meta-data.d/$1
 
 sudo virt-install --name $1 --os-type linux --os-variant detect=on --memory $2 --vcpus $3 --network bridge=virbr10 --graphics none --disk path=/mnt/vms/$1.qcow2,size=20,bus=virtio,format=qcow2,backing_store="/home/jammy-server-cloudimg-amd64.img" --cloud-init user-data=backend/cloudinit/user-data.d/$1,meta-data=backend/cloudinit/meta-data.d/$1,network-config=backend/cloudinit/network-config-iot --import --noautoconsole
 
